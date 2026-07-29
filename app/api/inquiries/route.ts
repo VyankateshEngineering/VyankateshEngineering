@@ -198,7 +198,7 @@ export async function POST(req: Request) {
       const resend = new Resend(serverEnv.RESEND_API_KEY);
 
       const { error: sendError } = await resend.emails.send({
-        from: `${settings.companyName} Inquiries <onboarding@resend.dev>`,
+        from: `${settings.companyName} Inquiries <${serverEnv.RESEND_FROM_EMAIL}>`,
         to: serverEnv.CONTACT_EMAIL,
         replyTo: cleanEmail,
         subject: `[Inquiry] ${cleanRequirement} from ${cleanName}`,

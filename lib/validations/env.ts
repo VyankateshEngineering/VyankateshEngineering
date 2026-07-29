@@ -6,6 +6,7 @@
 
 function getServerEnv() {
   const resendApiKey = process.env.RESEND_API_KEY ?? '';
+  const resendFromEmail = process.env.RESEND_FROM_EMAIL ?? 'onboarding@resend.dev';
   const recaptchaSecretKey = process.env.RECAPTCHA_SECRET_KEY ?? '';
   const contactEmail = process.env.CONTACT_EMAIL ?? 'sales.vyankateshengg@gmail.com';
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://vyankatesh.com';
@@ -16,6 +17,7 @@ function getServerEnv() {
 
   return {
     RESEND_API_KEY: resendApiKey,
+    RESEND_FROM_EMAIL: resendFromEmail,
     RECAPTCHA_SECRET_KEY: recaptchaSecretKey,
     CONTACT_EMAIL: contactEmail,
     SITE_URL: siteUrl,
