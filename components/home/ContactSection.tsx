@@ -89,7 +89,13 @@ export default function ContactSection() {
         formElement.reset();
         setFileName(null);
       } else {
-        const data = await res.json();
+        let data;
+        try {
+          data = await res.json();
+        } catch (parseError) {
+          throw new Error(`Server returned status ${res.status}. Expected JSON but parsing failed.`);
+        }
+        
         if (data.details) {
           // Extract specific Zod error messages
           const errorMessages = Object.entries(data.details)
@@ -104,9 +110,9 @@ export default function ContactSection() {
           setErrorMsg(data.error || 'Failed to submit inquiry.');
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Submission Error', error);
-      setErrorMsg('Network error. Please try again later.');
+      setErrorMsg(error.message || 'Network error. Please try again later.');
     } finally {
       setLoading(false);
     }
