@@ -6,7 +6,6 @@ const publicSettings = {
   companyName: settings.companyName,
   contactEmail: settings.contactEmail,
   address: settings.address,
-  registeredAddress: settings.registeredAddress,
   mapEmbedUrl: settings.mapEmbedUrl,
   socialLinks: settings.socialLinks,
 };

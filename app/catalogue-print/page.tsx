@@ -275,13 +275,8 @@ export default function CataloguePrintPage() {
             
             <div className={styles.contactGrid}>
               <div className={styles.contactBlock}>
-                <h3>Work Address</h3>
+                <h3>Address</h3>
                 <p>{settings.address}</p>
-              </div>
-              
-              <div className={styles.contactBlock}>
-                <h3>Registered Address</h3>
-                <p>{settings.registeredAddress}</p>
               </div>
               
               <div className={styles.contactBlock}>

@@ -113,7 +113,7 @@ export default function ContactSection() {
   };
 
   // Pull settings from static data store
-  const { address, registeredAddress, contactEmail: email, mapEmbedUrl: mapUrl } = settings;
+  const { address, contactEmail: email, mapEmbedUrl: mapUrl } = settings;
 
   return (
     <section className={`section ${styles.section}`} id="contact">
@@ -141,15 +141,8 @@ export default function ContactSection() {
               <div className={styles.infoCard}>
                 <div className={styles.iconWrap}><MapPin size={24} /></div>
                 <div>
-                  <h4 className={styles.infoTitle}>Work Address</h4>
+                  <h4 className={styles.infoTitle}>Address</h4>
                   <p className={styles.infoDesc} style={{ whiteSpace: 'pre-line' }}>{address}</p>
-                </div>
-              </div>
-              <div className={styles.infoCard}>
-                <div className={styles.iconWrap}><MapPin size={24} /></div>
-                <div>
-                  <h4 className={styles.infoTitle}>Registered Address</h4>
-                  <p className={styles.infoDesc} style={{ whiteSpace: 'pre-line' }}>{registeredAddress}</p>
                 </div>
               </div>
             </div>

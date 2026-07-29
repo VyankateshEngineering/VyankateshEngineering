@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import Image from 'next/image';
 import { CheckCircle2 } from 'lucide-react';
@@ -45,7 +45,7 @@ export default function CapabilitiesSection() {
               <div className={styles.imagesGrid}>
                 <div className={styles.imageWrap}>
                   <Image 
-                    src="/gallery/Gdc Die Block.png" 
+                    src="/gallery/gdc-die-block.png" 
                     alt="GDC Die Block" 
                     fill 
                     className={styles.image} 
@@ -54,7 +54,7 @@ export default function CapabilitiesSection() {
                 </div>
                 <div className={styles.imageWrap}>
                   <Image 
-                    src="/gallery/Gdc Die.png" 
+                    src="/gallery/gdc-die.png" 
                     alt="GDC Die" 
                     fill 
                     className={styles.image} 
@@ -63,7 +63,7 @@ export default function CapabilitiesSection() {
                 </div>
                 <div className={styles.imageWrap}>
                   <Image 
-                    src="/gallery/Curve insert outside.png" 
+                    src="/gallery/curve-insert-outside.png" 
                     alt="Curve Insert" 
                     fill 
                     className={styles.image} 
@@ -97,7 +97,7 @@ export default function CapabilitiesSection() {
               <div className={styles.imagesGrid}>
                 <div className={styles.imageWrap}>
                   <Image 
-                    src="/products/Core pin set.png" 
+                    src="/products/core-pin-set.png" 
                     alt="Core Pin Set" 
                     fill 
                     className={styles.image} 
@@ -106,7 +106,7 @@ export default function CapabilitiesSection() {
                 </div>
                 <div className={styles.imageWrap}>
                   <Image 
-                    src="/products/Shot sleeve.png" 
+                    src="/products/shot-sleeve.png" 
                     alt="Shot Sleeve" 
                     fill 
                     className={styles.image} 
@@ -115,7 +115,7 @@ export default function CapabilitiesSection() {
                 </div>
                 <div className={styles.imageWrap}>
                   <Image 
-                    src="/products/Sprue Bush.png" 
+                    src="/products/sprue-bush.png" 
                     alt="Sprue Bush" 
                     fill 
                     className={styles.image} 

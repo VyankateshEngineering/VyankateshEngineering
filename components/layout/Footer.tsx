@@ -94,15 +94,7 @@ export default function Footer() {
                 <span className={styles.footerContactItem} style={{ whiteSpace: 'pre-line' }}>
                   <MapPin size={14} />
                   <span>
-                    <strong style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '2px' }}>Work</strong>
                     {settings.address}
-                  </span>
-                </span>
-                <span className={styles.footerContactItem} style={{ whiteSpace: 'pre-line' }}>
-                  <MapPin size={14} />
-                  <span>
-                    <strong style={{ display: 'block', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '2px' }}>Registered</strong>
-                    {settings.registeredAddress}
                   </span>
                 </span>
               </div>
