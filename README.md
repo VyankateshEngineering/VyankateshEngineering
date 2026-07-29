@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Vyankatesh Engineering
 
-## Getting Started
+Enterprise-grade flagship web application built for robust performance, accessibility, and scalability.
 
-First, run the development server:
+## 🚀 Tech Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript (Strict Mode)
+- **Styling**: Vanilla CSS (Global & Modules) with dynamic theming
+- **Animations**: Framer Motion (Optimized)
+- **Data Fetching**: Next.js native fetching with extended cache policies
+- **Forms**: React Hook Form + Zod (Strict Validation)
+- **Security**: Strict CSP, Rate Limiting, XSS protection, CAPTCHA
+- **SEO & Metadata**: JSON-LD, Dynamic Sitemaps, Open Graph
+- **Infrastructure**: Vercel/Node.js compatible, CI/CD ready
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Getting Started
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Prerequisites
+- Node.js 20+
+- npm 10+
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Installation
 
-## Learn More
+1. Install dependencies:
+   ```bash
+   npm ci
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+2. Environment Configuration:
+   Create a `.env.local` file with the following required variables:
+   ```env
+   # Server-only secrets
+   RESEND_API_KEY=your_resend_api_key
+   RECAPTCHA_SECRET_KEY=your_secret_key
+   CONTACT_EMAIL=your_contact_email@example.com
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   # Public variables
+   NEXT_PUBLIC_SITE_URL=http://localhost:3000
+   NEXT_PUBLIC_RECAPTCHA_SITE_KEY=your_public_key
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. Start Development Server:
+   ```bash
+   npm run dev
+   ```
+   Server runs at `http://localhost:3000`.
 
-## Deploy on Vercel
+## 🏗️ Architecture
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **`app/`**: Next.js 14 App Router conventions (Pages, Layouts, API routes).
+- **`components/`**: Reusable UI components ensuring WCAG AA+ accessibility.
+- **`lib/`**: Utilities, strict Zod validations (`validations/env.ts`), security middleware (`rateLimiter.ts`).
+- **`data/`**: Static strongly-typed local datasets.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🔒 Security Practices
+
+- **Zero Client Exposure**: Environment variables are strictly parsed by `serverEnv` wrapper to prevent accidental leaks.
+- **DDoS/Spam Mitigations**: In-memory rate limiting and request deduplication integrated on high-traffic endpoints (`/api/inquiries`).
+- **Headers**: Extended security headers (HSTS, COOP, XFO, Permissions-Policy) via `next.config.mjs`.
+
+## 🧪 Commands
+
+- **Lint**: `npm run lint` (ESLint Next.js Core Web Vitals)
+- **Type Check**: `npx tsc --noEmit`
+- **Build**: `npm run build` (Static Generation Optimization)
+- **Health Check**: `/api/health`
+
+---
+
+*Engineered with precision for a seamless enterprise business experience.*

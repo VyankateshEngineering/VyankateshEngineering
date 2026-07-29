@@ -1,0 +1,222 @@
+/* ============================================================
+   FOOTER STYLES
+   ============================================================ */
+
+/* CTA Banner */
+.ctaBanner {
+  background: linear-gradient(135deg, var(--primary-700) 0%, var(--primary-900) 100%);
+  padding: var(--space-16) 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.ctaBanner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.ctaInner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+  flex-wrap: wrap;
+}
+
+.ctaText { flex: 1; min-width: 280px; }
+
+.ctaTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 3vw, 1.875rem);
+  font-weight: 700;
+  color: var(--neutral-0);
+  margin-bottom: var(--space-2);
+}
+
+.ctaDesc {
+  font-size: var(--text-base);
+  color: var(--primary-200);
+}
+
+.ctaActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+/* Main Footer */
+.footer { background: var(--primary-900); }
+
+.footerMain { padding: var(--space-20) 0; }
+
+.footerGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: var(--space-12);
+}
+
+/* Brand Column */
+.footerBrand { display: flex; flex-direction: column; gap: var(--space-6); }
+
+.footerLogo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  text-decoration: none;
+}
+
+.footerLogoText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.footerLogoName {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary-500);
+}
+
+.footerLogoSub {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--primary-300);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.footerDesc {
+  font-size: var(--text-sm);
+  color: var(--primary-200);
+  line-height: 1.8;
+}
+
+.footerDesc strong { color: var(--primary-100); font-weight: 600; }
+
+.footerContact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.footerContactItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--primary-200);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a.footerContactItem:hover { color: var(--neutral-0); }
+
+/* Footer Columns */
+.footerCol { display: flex; flex-direction: column; gap: var(--space-5); }
+
+.footerColTitle {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--neutral-0);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.footerLinks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.footerLink {
+  font-size: var(--text-sm);
+  color: var(--primary-200);
+  text-decoration: none;
+  transition: color var(--transition-fast), padding-left var(--transition-fast);
+}
+
+.footerLink:hover {
+  color: var(--neutral-0);
+  padding-left: var(--space-2);
+}
+
+.footerLinkStatic {
+  font-size: var(--text-sm);
+  color: var(--primary-200);
+}
+
+/* Cert Badges */
+.footerCertBadges {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.certBadge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-3) var(--space-4);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-sm);
+  min-width: 70px;
+}
+
+.certBadgeText {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--primary-300);
+}
+
+.certBadgeSub {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--primary-400);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Footer Bottom Bar */
+.footerBottom {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding: var(--space-5) 0;
+}
+
+.footerBottomInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.footerCopy {
+  font-size: var(--text-sm);
+  color: var(--primary-400);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 1100px) {
+  .footerGrid { grid-template-columns: 1.5fr 1fr 1fr; gap: var(--space-8); }
+  .footerBrand { grid-column: 1 / -1; }
+}
+
+@media (max-width: 640px) {
+  .footerGrid { grid-template-columns: 1fr 1fr; }
+  .ctaInner { flex-direction: column; text-align: center; }
+  .ctaActions { justify-content: center; }
+  .footerBottomInner { flex-direction: column; text-align: center; }
+}
+
+@media (max-width: 480px) {
+  .footerGrid { grid-template-columns: 1fr; }
+}

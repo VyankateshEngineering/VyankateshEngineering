@@ -1,0 +1,9 @@
+.section {
+  background: var(--neutral-0);
+  border-bottom: 1px solid var(--neutral-200);
+}
+
+.sliderWrap {
+  margin-top: var(--space-12);
+  padding: var(--space-4) 0;
+}
