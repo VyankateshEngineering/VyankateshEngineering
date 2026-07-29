@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import StructuredData from '@/components/common/StructuredData';
 import { LinkButton } from '@/components/ui/Button';
@@ -188,24 +189,35 @@ export default function AboutPage() {
           <h2 className={styles.sectionHeading} id="story-heading">
             Built in Die Casting Country
           </h2>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-5)', maxWidth: '760px' }}>
-            <p className={styles.sectionBody} style={{ maxWidth: 'none' }}>
-              Vyankatesh Engineering was established in Waluj MIDC, Chhatrapati Sambhajinagar — one of
-              Maharashtra&apos;s most concentrated industrial corridors for die casting and precision
-              engineering. From the start, our focus was singular: manufacture the high-wear tooling
-              components that the die casting industry consumes repeatedly and demands to the highest
-              dimensional standards. Core pins, cavity inserts, dies, and shot sleeves are not commodity
-              items — each must be made right, to tolerance, every batch. That conviction has driven how
-              we built our capability over more than two decades.
-            </p>
-            <p className={styles.sectionBody} style={{ maxWidth: 'none' }}>
-              We invested progressively in CNC turning and milling, VMC machining, Wire and Sink EDM,
-              and precision surface and profile grinding. By keeping machining in-house and partnering
-              with certified experts for vacuum hardening and gas nitriding, we ensure total quality control. 
-              Today our product range covers the complete die casting tooling set: pins, inserts, dies (GDC and
-              LPDC), shot sleeves, sprue bushes, and copper chills — all processed through a
-              rigorous sequence and shipped with 100% dimensional inspection records.
-            </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1.2fr) minmax(0,1fr)', gap: 'var(--space-12)', alignItems: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-5)' }}>
+              <p className={styles.sectionBody} style={{ maxWidth: 'none' }}>
+                Vyankatesh Engineering was established in Waluj MIDC, Chhatrapati Sambhajinagar — one of
+                Maharashtra&apos;s most concentrated industrial corridors for die casting and precision
+                engineering. From the start, our focus was singular: manufacture the high-wear tooling
+                components that the die casting industry consumes repeatedly and demands to the highest
+                dimensional standards. Core pins, cavity inserts, dies, and shot sleeves are not commodity
+                items — each must be made right, to tolerance, every batch. That conviction has driven how
+                we built our capability over more than two decades.
+              </p>
+              <p className={styles.sectionBody} style={{ maxWidth: 'none' }}>
+                We invested progressively in CNC turning and milling, VMC machining, Wire and Sink EDM,
+                and precision surface and profile grinding. By keeping machining in-house and partnering
+                with certified experts for vacuum hardening and gas nitriding, we ensure total quality control. 
+                Today our product range covers the complete die casting tooling set: pins, inserts, dies (GDC and
+                LPDC), shot sleeves, sprue bushes, and copper chills — all processed through a
+                rigorous sequence and shipped with 100% dimensional inspection records.
+              </p>
+            </div>
+            <div style={{ position: 'relative', width: '100%', aspectRatio: '4/3', borderRadius: 'var(--radius-lg)', overflow: 'hidden', backgroundColor: 'var(--neutral-100)', boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
+              <Image 
+                src="/gallery/critical-inserts-set.png"
+                alt="Precision Die Casting Tooling Components"
+                fill
+                style={{ objectFit: 'cover' }}
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
           </div>
         </div>
       </section>
