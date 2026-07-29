@@ -2,7 +2,7 @@
 const nextConfig = {
   poweredByHeader: false,
   images: {
-    unoptimized: true,
+    unoptimized: false,
     minimumCacheTTL: 31536000,
     remotePatterns: [
       {
