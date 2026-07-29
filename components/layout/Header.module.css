@@ -264,7 +264,6 @@
 
 @media (max-width: 480px) {
   .logoName { font-size: 18px; }
-  .hamburger { width: 36px; height: 36px; }
   .inner { padding-inline: var(--space-4); }
 }
 

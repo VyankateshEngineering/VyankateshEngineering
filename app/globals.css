@@ -56,11 +56,11 @@
   --text-lg:   1.125rem;  /* 18px */
   --text-xl:   clamp(1.125rem, 2vw, 1.25rem);    /* 18-20px */
   --text-2xl:  clamp(1.25rem, 3vw, 1.5rem);      /* 20-24px */
-  --text-3xl:  clamp(1.5rem, 4vw, 1.875rem);     /* 24-30px */
-  --text-4xl:  clamp(1.75rem, 5vw, 2.25rem);     /* 28-36px */
-  --text-5xl:  clamp(2rem, 6vw, 3rem);           /* 32-48px */
-  --text-6xl:  clamp(2.5rem, 8vw, 3.75rem);      /* 40-60px */
-  --text-7xl:  clamp(3rem, 10vw, 4.5rem);        /* 48-72px */
+  --text-3xl:  clamp(1.375rem, 4vw, 1.875rem);   /* 22-30px */
+  --text-4xl:  clamp(1.5rem, 5vw, 2.25rem);      /* 24-36px */
+  --text-5xl:  clamp(1.75rem, 6vw, 3rem);        /* 28-48px */
+  --text-6xl:  clamp(2rem, 8vw, 3.75rem);        /* 32-60px */
+  --text-7xl:  clamp(2.25rem, 10vw, 4.5rem);     /* 36-72px */
 
   /* Spacing */
   --space-1:  0.25rem;
@@ -113,6 +113,7 @@
   --container-max:   1400px;
   --container-tight: 1100px;
   --nav-height:       80px;
+  --nav-height-mobile: 64px;
 }
 
 /* ---------- 3. Reset & Base ---------- */
@@ -170,11 +171,11 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.02em;
 }
 
-.display-xl { font-size: clamp(3rem, 8vw, var(--text-7xl)); font-weight: 800; }
-.display-lg { font-size: clamp(2rem, 6vw, var(--text-6xl)); font-weight: 700; }
+.display-xl { font-size: clamp(2.25rem, 8vw, var(--text-7xl)); font-weight: 800; word-break: break-word; }
+.display-lg { font-size: clamp(2rem, 6vw, var(--text-6xl)); font-weight: 700; word-break: break-word; }
 
-h1, .h1 { font-size: clamp(2rem, 5vw, var(--text-5xl)); font-weight: 700; }
-h2, .h2 { font-size: clamp(1.75rem, 4vw, var(--text-4xl)); font-weight: 600; }
+h1, .h1 { font-size: clamp(1.75rem, 5vw, var(--text-5xl)); font-weight: 700; word-break: break-word; }
+h2, .h2 { font-size: clamp(1.5rem, 4vw, var(--text-4xl)); font-weight: 600; word-break: break-word; }
 h3, .h3 { font-size: clamp(1.25rem, 2.5vw, var(--text-2xl)); font-weight: 600; }
 h4, .h4 { font-size: var(--text-xl); font-weight: 600; }
 h5, .h5 { font-size: var(--text-lg); font-weight: 600; }
@@ -221,9 +222,12 @@ p, .body-lg { font-size: var(--text-lg); line-height: 1.7; color: var(--color-te
 .section-alt    { background-color: var(--color-bg-alt); }
 
 @media (max-width: 768px) {
-  .section        { padding-block: var(--space-16); }
-  .section-sm     { padding-block: var(--space-12); }
-  .section-lg     { padding-block: var(--space-20); }
+  :root {
+    --nav-height: var(--nav-height-mobile, 64px);
+  }
+  .section        { padding-block: var(--space-10); }
+  .section-sm     { padding-block: var(--space-8); }
+  .section-lg     { padding-block: var(--space-12); }
 }
 
 /* ---------- 7. Grid System ---------- */
@@ -237,7 +241,7 @@ p, .body-lg { font-size: var(--text-lg); line-height: 1.7; color: var(--color-te
   .grid-3  { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 640px) {
-  .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+  .grid-4, .grid-3, .grid-2, .grid-auto { grid-template-columns: 1fr; gap: var(--space-5); }
 }
 
 /* ---------- 8. Card System ---------- */
@@ -397,6 +401,21 @@ p, .body-lg { font-size: var(--text-lg); line-height: 1.7; color: var(--color-te
   padding: 0.75rem;
   aspect-ratio: 1;
   border-radius: var(--radius-sm);
+}
+
+/* Mobile buttons */
+@media (max-width: 768px) {
+  .btn {
+    min-height: 44px;
+    padding: 0.5rem 1.25rem;
+    max-width: 100%;
+    white-space: normal;
+    text-align: center;
+  }
+  .btn-lg, .btn-xl {
+    padding: 0.75rem 1.5rem;
+    font-size: var(--text-base);
+  }
 }
 
 /* ---------- 10. Badge System ---------- */

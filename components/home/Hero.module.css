@@ -211,16 +211,16 @@
 /* Responsive */
 @media (max-width: 768px) {
   .hero {
-    height: auto;
-    min-height: 100vh;
-    padding-top: calc(var(--nav-height) + 80px);
-    padding-bottom: var(--space-20);
+    height: 80vh;
+    min-height: 500px;
+    padding-top: calc(var(--nav-height) + 40px);
+    padding-bottom: var(--space-12);
   }
   .desktopBr { display: none; }
   .content { text-align: center; align-items: center; }
-  .subtitle { font-size: 1rem; margin-bottom: var(--space-6); }
-  .actions { justify-content: center; width: 100%; flex-direction: column; gap: var(--space-4); }
-  .actions a { width: 100%; justify-content: center; }
+  .subtitle { font-size: 1rem; margin-bottom: var(--space-5); max-width: 90%; margin-inline: auto; }
+  .actions { justify-content: center; width: 100%; flex-direction: column; gap: var(--space-3); }
+  .actions a { width: 100%; justify-content: center; max-width: 320px; }
   .progressContainer { display: none; }
   .scrollIndicator { display: none; } /* Hide scroll icon on mobile to save space */
   .overlay {
