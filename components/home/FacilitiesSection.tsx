@@ -18,7 +18,7 @@ const FACILITIES = [
     title: 'VMC Machining',
     desc: 'Advanced Vertical Machining and Electrical Discharge Machining for die sinking.',
     icon: <Factory size={32} strokeWidth={1.5} />,
-    image: '/facilities/VMC-maching.jfif'
+    image: '/facilities/vmc-machining.jpg'
   },
   {
     title: 'Laser Engraving',
