@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronRight, Wrench, Settings, Zap, ArrowRight, Layers, CheckCircle2, Factory } from 'lucide-react';
 import StructuredData from '@/components/common/StructuredData';
@@ -74,12 +75,25 @@ export default function ManufacturingProcessPage() {
 
       {/* Philosophy */}
       <section className={styles.sectionAlt} aria-labelledby="philosophy-heading">
-        <div className="container" style={{ maxWidth: '800px' }}>
+        <div className="container">
           <p className={styles.sectionLabel}>Our Philosophy</p>
           <h2 className={styles.sectionHeading} id="philosophy-heading">The Value of Vertical Integration</h2>
-          <p className={styles.sectionBody}>
-            When critical manufacturing steps are not strictly managed, quality control is compromised. That is why Vyankatesh Engineering has invested heavily in maintaining an advanced in-house machining and grinding facility, supported by certified external partners for thermal processing. When a component enters our facility as certified DIN 1.2344 / H-13 steel billet, we manage its entire lifecycle—from precision machining through certified external thermal processing to final inspection. This single-source responsibility is how we eliminate dimensional drift and maintain our zero-compromise quality standard.
-          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1.2fr) minmax(0,1fr)', gap: 'var(--space-12)', alignItems: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-5)' }}>
+              <p className={styles.sectionBody} style={{ maxWidth: 'none' }}>
+                When critical manufacturing steps are not strictly managed, quality control is compromised. That is why Vyankatesh Engineering has invested heavily in maintaining an advanced in-house machining and grinding facility, supported by certified external partners for thermal processing. When a component enters our facility as certified DIN 1.2344 / H-13 steel billet, we manage its entire lifecycle—from precision machining through certified external thermal processing to final inspection. This single-source responsibility is how we eliminate dimensional drift and maintain our zero-compromise quality standard.
+              </p>
+            </div>
+            <div style={{ position: 'relative', width: '100%', aspectRatio: '4/3', borderRadius: 'var(--radius-lg)', overflow: 'hidden', backgroundColor: 'var(--neutral-100)', boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
+              <Image 
+                src="/gallery/gdc-die-block.png"
+                alt="Vertical Integration in Manufacturing"
+                fill
+                style={{ objectFit: 'cover' }}
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
+          </div>
         </div>
       </section>
 

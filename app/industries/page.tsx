@@ -182,7 +182,7 @@ export default function IndustriesPage() {
 
       {/* Our Commitment Checklist */}
       <section className={styles.section} aria-labelledby="commitment-heading">
-        <div className="container" style={{ maxWidth: '800px' }}>
+        <div className="container">
           <div className={styles.splitGrid}>
             <div>
               <p className={styles.sectionLabel}>Industry Standard</p>

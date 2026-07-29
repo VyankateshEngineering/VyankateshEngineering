@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import StructuredData from '@/components/common/StructuredData';
 import { LinkButton } from '@/components/ui/Button';
@@ -206,23 +207,34 @@ export default function QualityPage() {
           <h2 className={styles.sectionHeading} id="philosophy-heading">
             Quality Built Into the Process, Not Added At the End
           </h2>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-5)', maxWidth: '760px' }}>
-            <p className={styles.sectionBody} style={{ maxWidth: 'none' }}>
-              In precision die casting tooling, a component that leaves the factory out of tolerance is
-              a component that causes problems in the field — flash, misfire, premature failure, or a
-              die that cannot close cleanly. Fixing quality failures after the fact is expensive and
-              damages the production schedules of customers who rely on our components. That is why our
-              quality assurance approach integrates inspection at every stage of manufacturing, not just
-              at the end.
-            </p>
-            <p className={styles.sectionBody} style={{ maxWidth: 'none' }}>
-              From the point at which raw material enters our facility through to the moment a component
-              is packed for dispatch, there are defined verification gates where dimensions, hardness,
-              surface condition, and material identity are checked and recorded. 100% of components are
-              individually inspected — not sampled. Dimensional records, hardness data, and material
-              certificates are retained for every order, providing full traceability from finished
-              component back to certified raw material.
-            </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1.2fr) minmax(0,1fr)', gap: 'var(--space-12)', alignItems: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-5)' }}>
+              <p className={styles.sectionBody} style={{ maxWidth: 'none' }}>
+                In precision die casting tooling, a component that leaves the factory out of tolerance is
+                a component that causes problems in the field — flash, misfire, premature failure, or a
+                die that cannot close cleanly. Fixing quality failures after the fact is expensive and
+                damages the production schedules of customers who rely on our components. That is why our
+                quality assurance approach integrates inspection at every stage of manufacturing, not just
+                at the end.
+              </p>
+              <p className={styles.sectionBody} style={{ maxWidth: 'none' }}>
+                From the point at which raw material enters our facility through to the moment a component
+                is packed for dispatch, there are defined verification gates where dimensions, hardness,
+                surface condition, and material identity are checked and recorded. 100% of components are
+                individually inspected — not sampled. Dimensional records, hardness data, and material
+                certificates are retained for every order, providing full traceability from finished
+                component back to certified raw material.
+              </p>
+            </div>
+            <div style={{ position: 'relative', width: '100%', aspectRatio: '4/3', borderRadius: 'var(--radius-lg)', overflow: 'hidden', backgroundColor: 'var(--neutral-100)', boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
+              <Image 
+                src="/gallery/side-core-holder.jpeg"
+                alt="Precision Inspection and Quality Assurance"
+                fill
+                style={{ objectFit: 'cover' }}
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
           </div>
         </div>
       </section>
