@@ -130,6 +130,7 @@
 
 /* ── Desktop CTA button ─────────────────────────────────────── */
 .ctaBtn { flex-shrink: 0; }
+.navActions { display: flex; align-items: center; gap: 1rem; }
 
 /* ── Hamburger ──────────────────────────────────────────────── */
 .hamburger {
@@ -266,5 +267,3 @@
   .logoName { font-size: 18px; }
   .inner { padding-inline: var(--space-4); }
 }
-
-.navActions { display: flex; align-items: center; gap: 1rem; }
