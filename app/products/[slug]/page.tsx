@@ -117,7 +117,10 @@ export default function ProductPage({ params }: Props) {
     offers: {
       '@type': 'Offer',
       url,
-      availability: 'https://schema.org/InStock'
+      priceCurrency: 'INR',
+      price: '0',
+      availability: 'https://schema.org/InStock',
+      itemCondition: 'https://schema.org/NewCondition'
     },
     ...(product.material && { material: product.material }),
   };

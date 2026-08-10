@@ -288,7 +288,10 @@ export default function CategoryPage({ params }: Props) {
         offers: {
           '@type': 'Offer',
           url: `${baseUrl}/products/${p.slug}`,
-          availability: 'https://schema.org/InStock'
+          priceCurrency: 'INR',
+          price: '0',
+          availability: 'https://schema.org/InStock',
+          itemCondition: 'https://schema.org/NewCondition'
         },
       }
     })),
