@@ -114,6 +114,11 @@ export default function ProductPage({ params }: Props) {
     brand: { '@type': 'Brand', name: settings.companyName },
     manufacturer: { '@type': 'Organization', name: settings.companyName, url: baseUrl },
     url,
+    offers: {
+      '@type': 'Offer',
+      url,
+      availability: 'https://schema.org/InStock'
+    },
     ...(product.material && { material: product.material }),
   };
 

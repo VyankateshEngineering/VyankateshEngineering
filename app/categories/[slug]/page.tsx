@@ -285,6 +285,11 @@ export default function CategoryPage({ params }: Props) {
         url: `${baseUrl}/products/${p.slug}`,
         image: p.images[0] ? `${baseUrl}${p.images[0].url}` : undefined,
         brand: { '@type': 'Brand', name: settings.companyName },
+        offers: {
+          '@type': 'Offer',
+          url: `${baseUrl}/products/${p.slug}`,
+          availability: 'https://schema.org/InStock'
+        },
       }
     })),
   };
