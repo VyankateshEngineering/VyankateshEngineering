@@ -5,7 +5,7 @@ import StructuredData from '@/components/common/StructuredData';
 import { LinkButton } from '@/components/ui/Button';
 import styles from '../(authority)/authority.module.css';
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vyankatesh.com';
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com';
 
 export const metadata: Metadata = {
   title: 'Digital Catalogue | Die Casting Tooling | Vyankatesh Engineering',
@@ -17,6 +17,12 @@ export const metadata: Metadata = {
     url: `${baseUrl}/catalogue`,
     type: 'website',
     images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Vyankatesh Engineering Product Catalogue' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Product Catalogue | Vyankatesh Engineering',
+    description: 'Download our comprehensive die casting tooling catalogue — core pins, inserts, dies, shot sleeves, and accessories.',
+    images: ['/og-image.jpg'],
   },
 };
 

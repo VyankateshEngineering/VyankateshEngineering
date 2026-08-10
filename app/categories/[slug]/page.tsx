@@ -218,7 +218,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description = cc
     ? cc.intro.substring(0, 152) + '...'
     : `Browse precision-engineered ${category.name.toLowerCase()} for die casting and industrial manufacturing from Vyankatesh Engineering, Waluj MIDC.`;
-  const url = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://vyankatesh.com'}/categories/${params.slug}`;
+  const url = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com'}/categories/${params.slug}`;
 
   return {
     title,
@@ -228,6 +228,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title, description, url, type: 'website',
       images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: title }],
     },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ['/og-image.jpg'],
+    },
   };
 }
 
@@ -236,7 +242,7 @@ export default function CategoryPage({ params }: Props) {
   if (!category) notFound();
 
   const cc = category.content;
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vyankatesh.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com';
   const url = `${baseUrl}/categories/${category.slug}`;
 
   // Other categories for cross-linking

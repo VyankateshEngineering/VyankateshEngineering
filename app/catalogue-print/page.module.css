@@ -360,6 +360,8 @@
   background: var(--neutral-50);
   padding: 10mm;
   border-left: 4px solid var(--primary-500);
+  display: flex;
+  flex-direction: column;
 }
 
 .contactBlock h3 {
@@ -369,6 +371,7 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 0.8rem;
+  min-height: 2.8em; /* Forces consistent height for 1-line and 2-line headers */
 }
 
 .contactBlock p {

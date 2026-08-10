@@ -275,10 +275,15 @@ export default function CataloguePrintPage() {
             
             <div className={styles.contactGrid}>
               <div className={styles.contactBlock}>
-                <h3>Address</h3>
-                <p>{settings.address}</p>
+                <h3>Work Address</h3>
+                <p>C-106, Waluj MIDC,<br/>Chhatrapati Sambhajinagar,<br/>Maharashtra, India</p>
               </div>
               
+              <div className={styles.contactBlock}>
+                <h3>Registered Address</h3>
+                <p>C-252/3, Waluj MIDC,<br/>Chhatrapati<br/>Sambhajinagar,<br/>Maharashtra, India</p>
+              </div>
+
               <div className={styles.contactBlock}>
                 <h3>Email</h3>
                 <p>{settings.contactEmail}</p>
@@ -286,7 +291,7 @@ export default function CataloguePrintPage() {
               
               <div className={styles.contactBlock}>
                 <h3>Business Hours</h3>
-                <p>Monday - Saturday: 9:00 AM - 6:00 PM<br/>Sunday: Closed</p>
+                <p>Monday - Saturday:<br/>9:00 AM - 6:00 PM<br/>Sunday: Closed</p>
               </div>
             </div>
 

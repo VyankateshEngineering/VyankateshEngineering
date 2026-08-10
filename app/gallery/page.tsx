@@ -7,7 +7,7 @@ import GalleryPageClient from './GalleryPageClient';
 import { galleryItems } from '@/data/gallery';
 import styles from '../(authority)/authority.module.css';
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vyankatesh.com';
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com';
 
 export const metadata: Metadata = {
   title: 'Parts Gallery | Precision Die Casting Tooling | Vyankatesh Engineering',
@@ -19,6 +19,12 @@ export const metadata: Metadata = {
     url: `${baseUrl}/gallery`,
     type: 'website',
     images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Vyankatesh Engineering Parts Gallery' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Parts Gallery | Vyankatesh Engineering',
+    description: 'Explore our precision die casting tooling portfolio — core pins, inserts, dies, and accessories manufactured at Waluj MIDC.',
+    images: ['/og-image.jpg'],
   },
 };
 

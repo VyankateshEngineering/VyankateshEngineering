@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import styles from '../(authority)/authority.module.css';
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vyankatesh.com';
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com';
 const pageUrl = `${baseUrl}/about`;
 
 export const metadata: Metadata = {
@@ -32,6 +32,13 @@ export const metadata: Metadata = {
     url: pageUrl,
     type: 'website',
     images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Vyankatesh Engineering — About Us' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'About Vyankatesh Engineering | Precision Die Casting Tooling Manufacturer',
+    description:
+      'Learn how Vyankatesh Engineering built 20+ years of expertise in precision die casting tooling — core pins, inserts, dies, heat treatment, nitriding and 100% pre-dispatch inspection at our Waluj MIDC facility.',
+    images: ['/og-image.jpg'],
   },
 };
 

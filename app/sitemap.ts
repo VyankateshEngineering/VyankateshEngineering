@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { products } from '@/data/products';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vyankatesh.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com';
 
   const publishedProducts = products.filter((product) => product.isPublished);
 

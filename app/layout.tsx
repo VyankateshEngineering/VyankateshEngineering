@@ -24,7 +24,7 @@ const outfit = Outfit({
   display: 'swap',
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vyankatesh.com';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com';
 
 export const metadata: Metadata = {
   title: {
@@ -85,13 +85,20 @@ export const metadata: Metadata = {
 const jsonLd = [
   {
     '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
+    '@type': ['LocalBusiness', 'Organization'],
     name: settings.companyName,
     image: `${siteUrl}/logo.png`,
     '@id': `${siteUrl}/#organization`,
     url: siteUrl,
-    telephone: '+919999999999', // Placeholder until provided
     email: settings.contactEmail,
+    description: settings.globalSeoDesc,
+    foundingDate: '2004',
+    logo: {
+      '@type': 'ImageObject',
+      url: `${siteUrl}/logo.png`,
+      width: 210,
+      height: 210,
+    },
     address: {
       '@type': 'PostalAddress',
       streetAddress: 'C-106, Waluj MIDC',
@@ -111,8 +118,29 @@ const jsonLd = [
       opens: '09:00',
       closes: '18:00',
     },
+    areaServed: {
+      '@type': 'Country',
+      name: 'India',
+    },
+    knowsAbout: [
+      'Die Casting Tooling',
+      'Core Pins',
+      'Jet Cool Pins',
+      'Profile Inserts',
+      'HPDC Dies',
+      'GDC Dies',
+      'LPDC Dies',
+      'Shot Sleeves',
+      'Vacuum Heat Treatment',
+      'Precision Grinding',
+    ],
+    brand: {
+      '@type': 'Brand',
+      name: 'Vyankatesh Engineering',
+    },
     sameAs: [
       settings.socialLinks.linkedin,
+      `https://www.google.com/search?kgmid=/g/11z7q83hcg`,
     ].filter(Boolean),
   },
   {

@@ -5,7 +5,7 @@ import StructuredData from '@/components/common/StructuredData';
 import { LinkButton } from '@/components/ui/Button';
 import styles from '../(authority)/authority.module.css';
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vyankatesh.com';
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com';
 
 export const metadata: Metadata = {
   title: 'Industries Served | Automotive, Aerospace & Engineering | Vyankatesh Engineering',
@@ -17,6 +17,12 @@ export const metadata: Metadata = {
     url: `${baseUrl}/industries`,
     type: 'website',
     images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Vyankatesh Engineering Industries Served' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Industries Served | Vyankatesh Engineering',
+    description: 'Precision die casting tooling for automotive, electrical, and engineering sectors.',
+    images: ['/og-image.jpg'],
   },
 };
 

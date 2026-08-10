@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = `${product.name} Manufacturer & Supplier in India | Vyankatesh Engineering`;
   const rawDesc = (product.overview || product.description).replace(/<[^>]*>?/gm, '');
   const description = rawDesc.length > 155 ? rawDesc.substring(0, 152) + '...' : rawDesc;
-  const url = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://vyankatesh.com'}/products/${product.slug}`;
+  const url = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com'}/products/${product.slug}`;
   const imageUrl = product.images?.[0]?.url || '/og-image.jpg';
 
   return {
@@ -56,6 +56,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: 'article',
       images: [{ url: imageUrl, width: 800, height: 600, alt: product.images?.[0]?.alt || product.name }],
     },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [imageUrl],
+    },
   };
 }
 
@@ -63,7 +69,7 @@ export default function ProductPage({ params }: Props) {
   const product = getProduct(params.slug);
   if (!product) notFound();
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vyankatesh.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com';
   const url = `${baseUrl}/products/${product.slug}`;
 
   // Related products: same category, different product, max 3

@@ -6,7 +6,7 @@ import StructuredData from '@/components/common/StructuredData';
 import { LinkButton } from '@/components/ui/Button';
 import styles from '../(authority)/authority.module.css';
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vyankatesh.com';
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com';
 
 export const metadata: Metadata = {
   title: 'Manufacturing Process | Waluj MIDC | Vyankatesh Engineering',
@@ -18,6 +18,12 @@ export const metadata: Metadata = {
     url: `${baseUrl}/manufacturing-process`,
     type: 'website',
     images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Vyankatesh Engineering Manufacturing Process' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Manufacturing Process | Vyankatesh Engineering',
+    description: 'Explore our complete in-house manufacturing capabilities for precision die casting tooling.',
+    images: ['/og-image.jpg'],
   },
 };
 

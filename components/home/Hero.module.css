@@ -211,10 +211,10 @@
 /* Responsive */
 @media (max-width: 768px) {
   .hero {
-    height: 80vh;
-    min-height: 500px;
-    padding-top: calc(var(--nav-height) + 40px);
-    padding-bottom: var(--space-12);
+    height: 75vh;
+    min-height: 480px;
+    padding-top: calc(var(--nav-height) + 20px);
+    padding-bottom: var(--space-8);
   }
   .desktopBr { display: none; }
   .content { text-align: center; align-items: center; }

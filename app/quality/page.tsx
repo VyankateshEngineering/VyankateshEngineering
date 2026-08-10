@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import styles from '../(authority)/authority.module.css';
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vyankatesh.com';
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com';
 const pageUrl = `${baseUrl}/quality`;
 
 export const metadata: Metadata = {
@@ -32,6 +32,13 @@ export const metadata: Metadata = {
     url: pageUrl,
     type: 'website',
     images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Vyankatesh Engineering — Quality Assurance' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Quality Assurance | 100% Inspection Process | Vyankatesh Engineering',
+    description:
+      'Our 6-stage quality process covers raw material certification, CNC in-process gauging, Rockwell hardness testing, CMM dimensional inspection, and 100% pre-dispatch verification on every die casting tooling component.',
+    images: ['/og-image.jpg'],
   },
 };
 

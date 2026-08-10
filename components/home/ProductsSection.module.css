@@ -215,7 +215,35 @@
 @media (max-width: 640px) {
   .header { flex-direction: column; align-items: flex-start; gap: var(--space-4); }
   .navButtons { align-self: flex-end; }
-  .slider { grid-template-columns: 1fr; }
+  
+  /* Horizontal Swipeable Slider */
+  .slider { 
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    gap: var(--space-4);
+    padding-bottom: var(--space-6);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .slider::-webkit-scrollbar { display: none; }
+  
+  .card { 
+    flex: 0 0 85%;
+    max-width: 320px;
+    scroll-snap-align: center;
+  }
+
+  /* Filters horizontal snap */
+  .filterWrap {
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+  }
+  .filterBtn {
+    scroll-snap-align: center;
+  }
   
   .lightboxNav {
     width: 40px;
