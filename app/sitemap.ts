@@ -3,7 +3,7 @@ import { products } from '@/data/products';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const rawUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com';
-  const baseUrl = rawUrl.replace(/^https?:\/\/vyankateshengg\.com/, 'https://www.vyankateshengg.com');
+  const baseUrl = rawUrl.includes('vyankateshengg.com') ? 'https://www.vyankateshengg.com' : (rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`);
 
   const publishedProducts = products.filter((product) => product.isPublished);
 

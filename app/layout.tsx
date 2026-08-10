@@ -25,7 +25,7 @@ const outfit = Outfit({
 });
 
 const rawUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com';
-const siteUrl = rawUrl.replace(/^https?:\/\/vyankateshengg\.com/, 'https://www.vyankateshengg.com');
+const siteUrl = rawUrl.includes('vyankateshengg.com') ? 'https://www.vyankateshengg.com' : (rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`);
 
 export const metadata: Metadata = {
   title: {
