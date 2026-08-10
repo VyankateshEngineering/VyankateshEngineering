@@ -22,7 +22,7 @@ export default function Breadcrumb({ items, theme = 'dark' }: BreadcrumbProps) {
       '@type': 'ListItem',
       position: i + 1,
       name: item.name,
-      item: item.href ? `${process.env.NEXT_PUBLIC_SITE_URL || ''}${item.href}` : undefined,
+      item: item.href ? `${(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com').includes('vyankateshengg.com') ? 'https://www.vyankateshengg.com' : (process.env.NEXT_PUBLIC_SITE_URL?.startsWith('http') ? process.env.NEXT_PUBLIC_SITE_URL : `https://${process.env.NEXT_PUBLIC_SITE_URL || 'www.vyankateshengg.com'}`)}${item.href}` : undefined,
     })),
   };
 
