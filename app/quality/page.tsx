@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import styles from '../(authority)/authority.module.css';
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com';
+const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com').replace(/^https?:\/\/vyankateshengg\.com/, 'https://www.vyankateshengg.com');
 const pageUrl = `${baseUrl}/quality`;
 
 export const metadata: Metadata = {

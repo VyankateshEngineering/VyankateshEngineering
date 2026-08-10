@@ -5,7 +5,7 @@ import StructuredData from '@/components/common/StructuredData';
 import { LinkButton } from '@/components/ui/Button';
 import styles from '../(authority)/authority.module.css';
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com';
+const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com').replace(/^https?:\/\/vyankateshengg\.com/, 'https://www.vyankateshengg.com');
 
 export const metadata: Metadata = {
   title: 'Digital Catalogue | Die Casting Tooling | Vyankatesh Engineering',

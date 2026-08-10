@@ -24,7 +24,8 @@ const outfit = Outfit({
   display: 'swap',
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com';
+const rawUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com';
+const siteUrl = rawUrl.replace(/^https?:\/\/vyankateshengg\.com/, 'https://www.vyankateshengg.com');
 
 export const metadata: Metadata = {
   title: {
