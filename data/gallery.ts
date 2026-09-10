@@ -533,5 +533,119 @@ export const galleryItems: GalleryItem[] = [
     category: "Products",
     sortOrder: 42
   },
+  // ── New 2026-09 batch: 9 images from D:\removed (integrated into existing categories) ──
+  {
+    id: "jet-cool-core-pin-3",
+    url: "/gallery/jet-cool-core-pin-3.png",
+    alt: "Jet Cool Core Pin — precision bore view",
+    caption: "Jet Cool Core Pin",
+    category: "Pins",
+    sortOrder: 63
+  },
+  {
+    id: "jet-cool-profile-pin-4",
+    url: "/gallery/jet-cool-profile-pin-4.png",
+    alt: "Jet Cool Profile Pin — precision ground view",
+    caption: "Jet Cool Profile Pin",
+    category: "Pins",
+    sortOrder: 64
+  },
+  {
+    id: "jet-cool-profile-pin-5",
+    url: "/gallery/jet-cool-profile-pin-5.png",
+    alt: "Jet Cool Profile Pins — batch display",
+    caption: "Jet Cool Profile Pins",
+    category: "Pins",
+    sortOrder: 65
+  },
+  {
+    id: "jet-cooling-rail-profile-pin",
+    url: "/gallery/jet-cooling-rail-profile-pin.png",
+    alt: "Jet Cooling Rail Profile Pin — extended rail cooling",
+    caption: "Jet Cooling Rail Profile Pin",
+    category: "Pins",
+    sortOrder: 66
+  },
+  {
+    id: "loose-insert-2",
+    url: "/gallery/loose-insert-2.png",
+    alt: "Loose Insert — additional precision view",
+    caption: "Loose Insert",
+    category: "Inserts",
+    sortOrder: 67
+  },
+  {
+    id: "loose-piece-side",
+    url: "/gallery/loose-piece-side.png",
+    alt: "Loose Piece Side — precision machined side profile",
+    caption: "Loose Piece Side",
+    category: "Inserts",
+    sortOrder: 68
+  },
+  {
+    id: "loose-pieces",
+    url: "/gallery/loose-pieces.png",
+    alt: "Loose Pieces — batch of precision inserts",
+    caption: "Loose Pieces",
+    category: "Inserts",
+    sortOrder: 69
+  },
+  {
+    id: "profile-punch",
+    url: "/gallery/profile-punch.png",
+    alt: "Profile Punch — precision punch for die casting",
+    caption: "Profile Punch",
+    category: "Inserts",
+    sortOrder: 70
+  },
+  {
+    id: "profile-punches",
+    url: "/gallery/profile-punches.png",
+    alt: "Profile Punches — set of precision punches",
+    caption: "Profile Punches",
+    category: "Inserts",
+    sortOrder: 71
+  },
+  // ── Special Inserts (new product under Inserts — 5 images) ──
+  {
+    id: "special-insert-1",
+    url: "/gallery/special-insert-1.png",
+    alt: "Special Insert — forked prong PVD-coated insert",
+    caption: "Special Insert",
+    category: "Inserts",
+    sortOrder: 72
+  },
+  {
+    id: "special-insert-2",
+    url: "/gallery/special-insert-2.png",
+    alt: "Special Inserts — PVD-coated batch",
+    caption: "Special Inserts Batch",
+    category: "Inserts",
+    sortOrder: 73
+  },
+  {
+    id: "special-insert-3",
+    url: "/gallery/special-insert-3.png",
+    alt: "Special Inserts — precision HPDC set",
+    caption: "Special Inserts Set",
+    category: "Inserts",
+    sortOrder: 74
+  },
+  {
+    id: "special-insert-4",
+    url: "/gallery/special-insert-4.png",
+    alt: "Special Insert — circular base knurled",
+    caption: "Special Insert Detail",
+    category: "Inserts",
+    sortOrder: 75
+  },
+  {
+    id: "special-insert-5",
+    url: "/gallery/special-insert-5.png",
+    alt: "Special Insert — forked and stepped set",
+    caption: "Special Inserts Collection",
+    category: "Inserts",
+    sortOrder: 76
+  },
 ];
 

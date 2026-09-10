@@ -5,6 +5,7 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
+  themeColor: '#1a365d',
 };
 import './globals.css';
 import Header from '@/components/layout/Header';
@@ -33,6 +34,10 @@ export const metadata: Metadata = {
     template: '%s | Vyankatesh Engineering',
   },
   description: settings.globalSeoDesc,
+  applicationName: settings.companyName,
+  referrer: 'origin-when-cross-origin',
+  category: 'manufacturing',
+  classification: 'Precision Die Casting Tooling Manufacturer',
   keywords: [
     'Core Pin Manufacturer India',
     'Die Manufacturer Maharashtra',
@@ -44,20 +49,27 @@ export const metadata: Metadata = {
     'Vyankatesh Engineering',
     'Waluj MIDC',
     'Chhatrapati Sambhajinagar',
+    'Jet Cool Pin Manufacturer',
+    'HPDC Die Manufacturer',
+    'PVD Coated Inserts India',
   ],
-  authors: [{ name: settings.companyName }],
+  authors: [{ name: settings.companyName, url: siteUrl }],
   creator: settings.companyName,
+  publisher: settings.companyName,
+  formatDetection: { email: false, address: false, telephone: false },
   metadataBase: new URL(siteUrl),
+  alternates: { canonical: siteUrl },
+  manifest: `${siteUrl}/manifest.webmanifest`,
   openGraph: {
     type: 'website',
     locale: 'en_IN',
     url: siteUrl,
-    title: 'Vyankatesh Engineering',
+    title: 'Vyankatesh Engineering | Precision Die Casting Tooling Manufacturer',
     description: settings.globalSeoDesc,
     siteName: settings.companyName,
     images: [
       {
-        url: '/og-image.jpg',
+        url: `${siteUrl}/og-image.jpg`,
         width: 1200,
         height: 630,
         alt: `${settings.companyName} — Precision Industrial Manufacturing`,
@@ -66,9 +78,10 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Vyankatesh Engineering',
+    title: 'Vyankatesh Engineering | Precision Die Casting Tooling Manufacturer',
     description: settings.globalSeoDesc,
-    images: ['/og-image.jpg'],
+    images: [`${siteUrl}/og-image.jpg`],
+    creator: '@VyankateshEngg',
   },
   robots: {
     index: true,
@@ -81,6 +94,7 @@ export const metadata: Metadata = {
       'msvalidate.01': process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION ? [process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION] : [],
     },
   },
+  appleWebApp: { capable: true, title: settings.companyName, statusBarStyle: 'default' },
 };
 
 const jsonLd = [
@@ -151,9 +165,31 @@ const jsonLd = [
     url: siteUrl,
     name: settings.companyName,
     description: settings.globalSeoDesc,
+    inLanguage: 'en-IN',
     publisher: {
       '@id': `${siteUrl}/#organization`
-    }
+    },
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${siteUrl}/products/{search_term_string}`,
+      },
+      'query-input': 'required name=search_term_string',
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    '@id': `${siteUrl}/#product-categories`,
+    name: 'Vyankatesh Engineering Product Categories',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Pins', url: `${siteUrl}/categories/pins` },
+      { '@type': 'ListItem', position: 2, name: 'Inserts', url: `${siteUrl}/categories/inserts` },
+      { '@type': 'ListItem', position: 3, name: 'Dies', url: `${siteUrl}/categories/dies` },
+      { '@type': 'ListItem', position: 4, name: 'Cooling Systems', url: `${siteUrl}/categories/cooling` },
+      { '@type': 'ListItem', position: 5, name: 'Casting Accessories', url: `${siteUrl}/categories/accessories` },
+    ],
   }
 ];
 

@@ -170,7 +170,8 @@ export const products: Product[] = [
     ],
     images: [
       { url: "/products/jet-cool-core-pins.png", alt: "Jet Cool Core Pin set — internally cooled for HPDC hot spots" },
-      { url: "/products/long-jet-cool-core-pin.png", alt: "Long Jet Cool Core Pin for deep cavity cooling up to 600mm" }
+      { url: "/products/long-jet-cool-core-pin.png", alt: "Long Jet Cool Core Pin for deep cavity cooling up to 600mm" },
+      { url: "/products/jet-cool-core-pin-3.png", alt: "Jet Cool Core Pin — precision drilled bore view" }
     ],
     isPublished: true,
     sortOrder: 2
@@ -234,7 +235,10 @@ export const products: Product[] = [
       { url: "/products/jet-cool-profile-pin.png", alt: "Jet Cool Profile Pin — custom cross-section with internal cooling" },
       { url: "/products/profile-pin.png", alt: "Profile Pin for die casting — special cross section" },
       { url: "/gallery/profile-pins.png", alt: "Set of various profile pins manufactured by Vyankatesh Engineering" },
-      { url: "/gallery/jet-cooler-with-profile-pin.png", alt: "Jet cooler assembled with profile pin for hot-spot cooling" }
+      { url: "/gallery/jet-cooler-with-profile-pin.png", alt: "Jet cooler assembled with profile pin for hot-spot cooling" },
+      { url: "/products/jet-cool-profile-pin-4.png", alt: "Jet Cool Profile Pin — precision ground view" },
+      { url: "/products/jet-cool-profile-pin-5.png", alt: "Jet Cool Profile Pins — batch display" },
+      { url: "/products/jet-cooling-rail-profile-pin.png", alt: "Jet Cooling Rail Profile Pin — extended rail cooling design" }
     ],
     isPublished: true,
     sortOrder: 3
@@ -438,7 +442,12 @@ export const products: Product[] = [
       { url: "/gallery/critical-insert-4.png", alt: "Machined and nitrided profile insert for long insert life" },
       { url: "/gallery/critical-inserts-set.png", alt: "Set of critical profile inserts manufactured by Vyankatesh Engineering" },
       { url: "/gallery/lpdc-insert.png", alt: "Profile insert for LPDC die casting application" },
-      { url: "/products/inserts.png", alt: "Range of precision profile inserts — various sizes and geometries" }
+      { url: "/products/inserts.png", alt: "Range of precision profile inserts — various sizes and geometries" },
+      { url: "/products/loose-insert-2.png", alt: "Loose Insert — additional precision view" },
+      { url: "/products/loose-piece-side.png", alt: "Loose Piece Side — precision machined side profile" },
+      { url: "/products/loose-pieces.png", alt: "Loose Pieces — batch of precision inserts" },
+      { url: "/products/profile-punch.png", alt: "Profile Punch — precision punch for die casting" },
+      { url: "/products/profile-punches.png", alt: "Profile Punches — set of precision punches" }
     ],
     isPublished: true,
     sortOrder: 6
@@ -1021,6 +1030,83 @@ export const products: Product[] = [
     sortOrder: 14
   },
 
+  {
+    id: "special-inserts",
+    slug: "special-inserts",
+    name: "Special Inserts",
+    category: {
+      name: "Inserts",
+      slug: "inserts"
+    },
+    description: "PVD-coated special purpose inserts with complex geometries for critical die casting features — forked, stepped and precision-profiled forms manufactured from H-13 tool steel for extreme wear and soldering resistance.",
+    overview: "Special Inserts from Vyankatesh Engineering are application-specific, PVD-coated die inserts designed for the most demanding cavity features in high-pressure die casting (HPDC). Featuring forked prongs, stepped blocks, circular bases with knurled textures and intricate undercut profiles, these inserts form complex casting details that standard profile inserts cannot produce. Manufactured from premium AISI H-13 / DIN 1.2344 tool steel, vacuum hardened to 44–48 HRC and PVD-coated (TiN/TiAlN) for exceptional surface hardness and anti-soldering performance, each Special Insert is precision-machined and 100% inspected to deliver consistent, long-life performance in high-volume production.",
+    applications: "Critical HPDC cavity features, complex automotive housings, precision structural components.",
+    applicationsList: [
+      "Complex forked and bifurcated cavity features requiring precise prong geometry",
+      "Stepped and multi-level inserts for housing ribs, bosses and structural reinforcements",
+      "Critical inserts with circular bases and knurled textures for anti-rotation or sealing features",
+      "High-wear die zones where PVD coating extends insert life against soldering and erosion",
+      "Precision HPDC dies for automotive, two-wheeler and industrial aluminum castings"
+    ],
+    specs: {
+      "Material": "AISI H-13 / DIN 1.2344 Hot Work Tool Steel",
+      "Hardness": "44–48 HRC after vacuum hardening + double/triple tempering",
+      "Surface Treatment": "PVD Coating (TiN / TiAlN) for extreme wear and soldering resistance",
+      "Coating Hardness": "Up to 2300 HV (TiAlN) with low friction coefficient",
+      "Dimensional Accuracy": "Precision ground and CMM-inspected to customer drawing",
+      "Geometry Capability": "Forked, stepped, circular-base and knurled forms via VMC + Wire EDM + Sink EDM",
+      "Manufacturing": "CNC Machining, Wire EDM, Sink EDM, Precision Grinding, Polishing, PVD Coating"
+    },
+    features: [
+      "Manufactured from certified AISI H-13 / DIN 1.2344 for maximum thermal fatigue and soldering resistance",
+      "Vacuum hardened with controlled gas quench — uniform 44–48 HRC without distortion",
+      "PVD TiN/TiAlN coating applied for surface hardness up to 2300 HV and exceptional anti-sticking performance",
+      "Complex geometries — forked prongs, stepped blocks, circular knurled bases — machined via Wire EDM and Sink EDM",
+      "Precision ground critical faces and CMM-inspected to tight drawing tolerances",
+      "Dark PVD finish provides visual wear indication and corrosion resistance",
+      "End-to-end quality management from raw billet to finished coated insert — full traceability"
+    ],
+    keyAdvantages: [
+      "Single-source special insert for geometries too complex for standard catalog tooling",
+      "PVD coating dramatically extends insert life in high-silicon aluminum alloys by preventing soldering",
+      "Complex forked and stepped forms produced in one precision component — no assembly required",
+      "Consistent batch quality due to documented CNC and EDM programs + 100% inspection"
+    ],
+    industries: ["Automotive HPDC", "Two-Wheeler & Motorcycle", "Industrial Machinery", "Electrical & Electronics Housings"],
+    material: "AISI H-13 / DIN 1.2344 + PVD TiN/TiAlN Coating",
+    tolerance: "Ground to customer drawing tolerance. Critical prong and step dimensions typically ±0.01mm, profiled faces CMM-verified.",
+    surfaceFinish: "PVD coated (TiN/TiAlN) over precision ground substrate. Coating thickness 2–4 μm, surface finish Ra optimized for metal flow and ejection.",
+    customization: "Fully custom per customer 2D drawing, 3D model or sample. Fork height, prong spacing, step levels, base diameter and knurl pattern all tailored to casting design.",
+    availableSizes: "Any size from compact 20mm inserts to large format blocks. Prong heights, base diameters and stepped profiles per drawing.",
+    qualityNote: "Every Special Insert undergoes 100% CMM dimensional inspection, Rockwell hardness verification and visual PVD coating inspection. Critical prong geometries blue-matched where required.",
+    faqs: [
+      {
+        q: "What makes a Special Insert different from a standard Profile Insert?",
+        a: "Special Inserts are designed for cavity features with complex, non-standard geometries — such as forked prongs, multi-step blocks and circular knurled bases — that require Wire EDM and Sink EDM in combination with PVD coating. While Profile Inserts cover general loose/fixed applications, Special Inserts address critical, application-specific features where a standard insert cannot form the required casting detail."
+      },
+      {
+        q: "Why is PVD coating critical for these inserts?",
+        a: "High-volume HPDC with aluminum alloys causes soldering (aluminum sticking to the steel) and erosive wear. PVD TiN/TiAlN creates an ultra-hard (up to 2300 HV), low-friction surface that resists soldering, extends insert life 2–3× and maintains cavity surface quality over many more shots."
+      },
+      {
+        q: "Can you manufacture Special Inserts from my existing sample?",
+        a: "Yes. Provide a worn sample, 2D drawing or 3D model and we will reverse-engineer the geometry using CMM measurement, reconstruct the design intent and manufacture replacement inserts with the same material, heat treatment and PVD coating as the original."
+      },
+      {
+        q: "How do you ensure consistency across a batch of complex inserts?",
+        a: "We use documented CNC and EDM programs, controlled vacuum hardening and PVD parameters, and 100% CMM inspection of critical dimensions. Each insert is individually measured before dispatch, ensuring batch-to-batch consistency even for the most complex forked and stepped geometries."
+      }
+    ],
+    images: [
+      { url: "/products/special-insert-1.png", alt: "Special Insert — forked prong PVD-coated precision insert" },
+      { url: "/products/special-insert-2.png", alt: "Special Inserts batch — PVD-coated complex geometry inserts" },
+      { url: "/products/special-insert-3.png", alt: "Special Inserts collection — precision HPDC cavity inserts" },
+      { url: "/products/special-insert-4.png", alt: "Special Insert detail — circular base with knurled texture" },
+      { url: "/products/special-insert-5.png", alt: "Special Insert set — forked and stepped PVD-coated inserts" }
+    ],
+    isPublished: true,
+    sortOrder: 15
+  },
 
   {
     id: "long-jet-cool-core-pin",
