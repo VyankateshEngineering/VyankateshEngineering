@@ -105,6 +105,7 @@ export default function ProductPage({ params }: Props) {
     ],
   };
 
+  // B2B custom tooling — no fixed price (made to drawing). No Offer price keeps Product valid for organic without Merchant critical "price 0".
   const productSchema = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -114,14 +115,6 @@ export default function ProductPage({ params }: Props) {
     brand: { '@type': 'Brand', name: settings.companyName },
     manufacturer: { '@type': 'Organization', name: settings.companyName, url: baseUrl },
     url,
-    offers: {
-      '@type': 'Offer',
-      url,
-      priceCurrency: 'INR',
-      price: '0',
-      availability: 'https://schema.org/InStock',
-      itemCondition: 'https://schema.org/NewCondition'
-    },
     ...(product.material && { material: product.material }),
   };
 

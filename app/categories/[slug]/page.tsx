@@ -269,6 +269,7 @@ export default function CategoryPage({ params }: Props) {
     ],
   };
 
+  // Category ItemList — products are custom to drawing (price on request). Omit Offer to avoid Merchant "price 0" critical.
   const itemListSchema = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
@@ -285,14 +286,6 @@ export default function CategoryPage({ params }: Props) {
         url: `${baseUrl}/products/${p.slug}`,
         image: p.images[0] ? `${baseUrl}${p.images[0].url}` : undefined,
         brand: { '@type': 'Brand', name: settings.companyName },
-        offers: {
-          '@type': 'Offer',
-          url: `${baseUrl}/products/${p.slug}`,
-          priceCurrency: 'INR',
-          price: '0',
-          availability: 'https://schema.org/InStock',
-          itemCondition: 'https://schema.org/NewCondition'
-        },
       }
     })),
   };
