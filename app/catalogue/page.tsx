@@ -9,7 +9,7 @@ let rawUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com
 const baseUrl = rawUrl.includes('vyankateshengg.com') ? 'https://www.vyankateshengg.com' : (rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`);
 
 export const metadata: Metadata = {
-  title: 'Digital Catalogue | Die Casting Tooling | Vyankatesh Engineering',
+  title: 'Digital Catalogue | Die Casting Tooling',
   description: 'Download the Vyankatesh Engineering product catalogue. Comprehensive die casting tooling catalogue covering core pins, jet cool pins, inserts, dies, shot sleeves, and accessories.',
   alternates: { canonical: `${baseUrl}/catalogue` },
   openGraph: {

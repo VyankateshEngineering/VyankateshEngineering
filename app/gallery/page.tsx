@@ -11,7 +11,7 @@ let rawUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com
 const baseUrl = rawUrl.includes('vyankateshengg.com') ? 'https://www.vyankateshengg.com' : (rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`);
 
 export const metadata: Metadata = {
-  title: 'Parts Gallery | Precision Die Casting Tooling | Vyankatesh Engineering',
+  title: 'Parts Gallery | Precision Tooling',
   description: 'Browse our portfolio of precision-manufactured die casting tooling — core pins, jet cool pins, profile inserts, HPDC inserts, GDC dies, shot sleeves, and more. Manufactured at Waluj MIDC by Vyankatesh Engineering.',
   alternates: { canonical: `${baseUrl}/gallery` },
   openGraph: {

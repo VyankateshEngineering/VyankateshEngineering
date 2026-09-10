@@ -10,7 +10,7 @@ let rawUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com
 const baseUrl = rawUrl.includes('vyankateshengg.com') ? 'https://www.vyankateshengg.com' : (rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`);
 
 export const metadata: Metadata = {
-  title: 'Manufacturing Process | Waluj MIDC | Vyankatesh Engineering',
+  title: 'Manufacturing Process | Waluj MIDC',
   description: 'Learn about our end-to-end in-house manufacturing process — CNC turning, VMC machining, EDM, vacuum hardening, precision grinding, and nitriding at Waluj MIDC.',
   alternates: { canonical: `${baseUrl}/manufacturing-process` },
   openGraph: {

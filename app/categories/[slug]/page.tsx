@@ -214,7 +214,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!category) return {};
 
   const cc = category.content;
-  const title = `${category.name} Manufacturer in India | Vyankatesh Engineering`;
+  const title = `${category.name} Manufacturer India`;
   const description = cc
     ? cc.intro.substring(0, 152) + '...'
     : `Browse precision-engineered ${category.name.toLowerCase()} for die casting and industrial manufacturing from Vyankatesh Engineering, Waluj MIDC.`;

@@ -22,7 +22,7 @@ const baseUrl = rawUrl.includes('vyankateshengg.com') ? 'https://www.vyankateshe
 const pageUrl = `${baseUrl}/about`;
 
 export const metadata: Metadata = {
-  title: 'About Us | 20+ Years Precision Die Casting Tooling | Vyankatesh Engineering',
+  title: 'About Us | 20+ Years Precision Tooling',
   description:
     'Vyankatesh Engineering — precision die casting tooling manufacturer in Waluj MIDC, Chhatrapati Sambhajinagar. 20+ years of experience in core pins, inserts, GDC/LPDC dies, heat treatment and nitriding. MSME & MIDC registered.',
   alternates: { canonical: pageUrl },

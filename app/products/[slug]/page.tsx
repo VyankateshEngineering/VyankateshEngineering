@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const product = getProduct(params.slug);
   if (!product) return {};
 
-  const title = `${product.name} Manufacturer & Supplier in India | Vyankatesh Engineering`;
+  const title = `${product.name} Manufacturer India`;
   const rawDesc = (product.overview || product.description).replace(/<[^>]*>?/gm, '');
   const description = rawDesc.length > 155 ? rawDesc.substring(0, 152) + '...' : rawDesc;
   let rawUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com';

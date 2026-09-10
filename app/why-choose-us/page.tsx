@@ -9,7 +9,7 @@ let rawUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com
 const baseUrl = rawUrl.includes('vyankateshengg.com') ? 'https://www.vyankateshengg.com' : (rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`);
 
 export const metadata: Metadata = {
-  title: 'Why Choose Vyankatesh Engineering | Precision Tooling Manufacturer India',
+  title: 'Why Choose Us | Precision Tooling',
   description: 'Specialist manufacturer of die casting tooling. We offer custom manufacturing, 100% inspection, vacuum hardening, and full traceability.',
   alternates: { canonical: `${baseUrl}/why-choose-us` },
   openGraph: {

@@ -9,7 +9,7 @@ let rawUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com
 const baseUrl = rawUrl.includes('vyankateshengg.com') ? 'https://www.vyankateshengg.com' : (rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`);
 
 export const metadata: Metadata = {
-  title: 'Industries Served | Automotive, Aerospace & Engineering | Vyankatesh Engineering',
+  title: 'Industries Served | Automotive and Engineering',
   description: 'Vyankatesh Engineering supplies precision die casting tooling to the automotive, electrical, aerospace, and general engineering industries across India.',
   alternates: { canonical: `${baseUrl}/industries` },
   openGraph: {

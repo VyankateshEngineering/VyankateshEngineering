@@ -22,7 +22,7 @@ const baseUrl = rawUrl.includes('vyankateshengg.com') ? 'https://www.vyankateshe
 const pageUrl = `${baseUrl}/quality`;
 
 export const metadata: Metadata = {
-  title: 'Quality Assurance | 100% Inspection | Vyankatesh Engineering',
+  title: 'Quality Assurance | 100% Inspection',
   description:
     'Quality at Vyankatesh Engineering is built into every manufacturing stage — not just final inspection. Every component undergoes raw material verification, in-process dimensional control, heat treatment validation, post-grind inspection, surface treatment verification, and 100% pre-dispatch check.',
   alternates: { canonical: pageUrl },
