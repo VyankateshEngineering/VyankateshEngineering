@@ -42,6 +42,10 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
+      {/* Server-rendered H1 for SEO / Bingbot — Hero H1 is client-fetched, so crawler would see no H1 without this */}
+      <h1 className="sr-only">
+        Vyankatesh Engineering — Precision Die Casting Tooling Manufacturer, Waluj MIDC — Core Pins, Jet Cool Pins, Inserts, Dies &amp; Shot Sleeves | 20+ Years, 100% Inspected
+      </h1>
       <Hero />
       <CompanySection />
       <FacilitiesSection />
