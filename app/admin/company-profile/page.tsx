@@ -9,7 +9,18 @@ export const metadata = {
 };
 
 export default async function AdminCompanyProfilePage() {
-  const profile = await prisma.companyProfile.findFirst({ orderBy: { createdAt: "asc" } });
+  let profile: Awaited<ReturnType<typeof prisma.companyProfile.findFirst>> = null;
+  let dbError: string | null = null;
+  try {
+    profile = await prisma.companyProfile.findFirst({ orderBy: { createdAt: "asc" } });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    if (msg.includes('does not exist') || msg.includes('DATABASE_URL') || msg.includes('P1001') || msg.includes('P2021')) {
+      dbError = 'Database not yet migrated — run supabase.sql in Supabase SQL Editor, then refresh. Public company info uses fallback.';
+    } else {
+      dbError = msg;
+    }
+  }
 
   // Provide fallback default if no profile exists yet
   const initialData = profile
@@ -49,6 +60,13 @@ export default async function AdminCompanyProfilePage() {
           {isNew && <span className="ml-2 inline-flex rounded bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800">No profile yet — will create on save</span>}
         </p>
       </div>
+
+      {dbError && (
+        <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
+          <p className="text-sm font-semibold text-amber-900">Database not ready</p>
+          <p className="mt-1 text-sm text-amber-800">{dbError}</p>
+        </div>
+      )}
 
       <CompanyProfileClient initialData={initialData} isNew={isNew} />
     </div>

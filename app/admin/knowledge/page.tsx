@@ -44,17 +44,30 @@ export default async function AdminKnowledgePage({
 
   const whereClause = andConditions.length ? { AND: andConditions } : {};
 
-  const [total, articles, categoriesRaw] = await Promise.all([
-    prisma.knowledgeArticle.count({ where: whereClause }),
-    prisma.knowledgeArticle.findMany({
-      where: whereClause,
-      include: { faqs: { orderBy: { sortOrder: "asc" } } },
-      orderBy: [{ updatedAt: "desc" }],
-      skip: (page - 1) * pageSize,
-      take: pageSize,
-    }),
-    prisma.knowledgeArticle.findMany({ select: { category: true } }),
-  ]);
+  let total = 0;
+  let articles: Awaited<ReturnType<typeof prisma.knowledgeArticle.findMany>> = [];
+  let categoriesRaw: { category: string | null }[] = [];
+  let dbError: string | null = null;
+  try {
+    [total, articles, categoriesRaw] = await Promise.all([
+      prisma.knowledgeArticle.count({ where: whereClause }),
+      prisma.knowledgeArticle.findMany({
+        where: whereClause,
+        include: { faqs: { orderBy: { sortOrder: "asc" } } },
+        orderBy: [{ updatedAt: "desc" }],
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+      }),
+      prisma.knowledgeArticle.findMany({ select: { category: true } }),
+    ]);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    if (msg.includes('does not exist') || msg.includes('DATABASE_URL') || msg.includes('P1001') || msg.includes('P2021')) {
+      dbError = 'Database not yet migrated — run supabase.sql in Supabase SQL Editor, then refresh.';
+    } else {
+      dbError = msg;
+    }
+  }
 
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
   const uniqueCategories = Array.from(new Set(categoriesRaw.map((c) => c.category).filter(Boolean) as string[])).sort();
@@ -84,6 +97,13 @@ export default async function AdminKnowledgePage({
           + New Article
         </Link>
       </div>
+
+      {dbError && (
+        <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
+          <p className="text-sm font-semibold text-amber-900">Database not ready</p>
+          <p className="mt-1 text-sm text-amber-800">{dbError}</p>
+        </div>
+      )}
 
       <form method="GET" className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
         <div className="grid gap-3 sm:grid-cols-4">

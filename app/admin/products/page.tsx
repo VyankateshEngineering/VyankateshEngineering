@@ -18,7 +18,11 @@ type SearchParams = {
 };
 
 async function getCategories() {
-  return prisma.category.findMany({ orderBy: { sortOrder: "asc" } });
+  try {
+    return await prisma.category.findMany({ orderBy: { sortOrder: "asc" } });
+  } catch {
+    return [];
+  }
 }
 
 export default async function AdminProductsPage({
@@ -55,22 +59,35 @@ export default async function AdminProductsPage({
 
   const whereClause = andConditions.length ? { AND: andConditions } : {};
 
-  const [categories, total, products] = await Promise.all([
-    getCategories(),
-    prisma.product.count({ where: whereClause }),
-    prisma.product.findMany({
-      where: whereClause,
-      include: {
-        category: true,
-        images: {
-          orderBy: [{ isPrimary: "desc" }, { sortOrder: "asc" }],
+  let categories: Awaited<ReturnType<typeof getCategories>> = [];
+  let total = 0;
+  let products: Awaited<ReturnType<typeof prisma.product.findMany>> = [];
+  let dbError: string | null = null;
+  try {
+    [categories, total, products] = await Promise.all([
+      getCategories(),
+      prisma.product.count({ where: whereClause }),
+      prisma.product.findMany({
+        where: whereClause,
+        include: {
+          category: true,
+          images: {
+            orderBy: [{ isPrimary: "desc" }, { sortOrder: "asc" }],
+          },
         },
-      },
-      orderBy: [{ sortOrder: "asc" }, { updatedAt: "desc" }],
-      skip: (page - 1) * pageSize,
-      take: pageSize,
-    }),
-  ]);
+        orderBy: [{ sortOrder: "asc" }, { updatedAt: "desc" }],
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+      }),
+    ]);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    if (msg.includes('does not exist') || msg.includes('DATABASE_URL') || msg.includes('P1001') || msg.includes('P2021')) {
+      dbError = 'Database not yet migrated — run supabase.sql in Supabase SQL Editor, then refresh. Public site is using fallback data.';
+    } else {
+      dbError = msg;
+    }
+  }
 
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
 
@@ -103,6 +120,14 @@ export default async function AdminProductsPage({
           + Add Product
         </Link>
       </div>
+
+      {dbError && (
+        <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
+          <p className="text-sm font-semibold text-amber-900">Database not ready</p>
+          <p className="mt-1 text-sm text-amber-800">{dbError}</p>
+          <p className="mt-2 text-xs text-amber-700">Run <code>supabase.sql</code> in Supabase → SQL Editor → New query → Run, then refresh this page. Public site uses fallback data so it still works.</p>
+        </div>
+      )}
 
       {/* Filters */}
       <form method="GET" className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">

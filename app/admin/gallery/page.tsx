@@ -10,20 +10,41 @@ export const metadata = {
 };
 
 async function getCategories() {
-  const cats = await prisma.category.findMany({ orderBy: { sortOrder: "asc" } });
-  // Fallback to gallery-derived categories if DB empty
-  if (cats.length === 0) {
+  try {
+    const cats = await prisma.category.findMany({ orderBy: { sortOrder: "asc" } });
+    if (cats.length === 0) {
+      const fallback = ["Pins", "Inserts", "Dies", "Products", "Cores", "Gallery", "Cooling Systems", "Accessories"];
+      return fallback.map((name) => ({ id: name, name, slug: name.toLowerCase().replace(/\s+/g, "-") }));
+    }
+    return cats;
+  } catch {
     const fallback = ["Pins", "Inserts", "Dies", "Products", "Cores", "Gallery", "Cooling Systems", "Accessories"];
-    return fallback.map((name, idx) => ({ id: name, name, slug: name.toLowerCase().replace(/\s+/g, "-") }));
+    return fallback.map((name) => ({ id: name, name, slug: name.toLowerCase().replace(/\s+/g, "-") }));
   }
-  return cats;
 }
 
 export default async function AdminGalleryPage() {
-  const [images, categories] = await Promise.all([
-    prisma.galleryImage.findMany({ orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }] }),
-    getCategories(),
-  ]);
+  let images: Awaited<ReturnType<typeof prisma.galleryImage.findMany>> = [];
+  let categories: Awaited<ReturnType<typeof getCategories>> = [];
+  let dbError: string | null = null;
+  try {
+    [images, categories] = await Promise.all([
+      prisma.galleryImage.findMany({ orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }] }),
+      getCategories(),
+    ]);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    if (msg.includes('does not exist') || msg.includes('DATABASE_URL') || msg.includes('P1001') || msg.includes('P2021')) {
+      dbError = 'Database not yet migrated — run supabase.sql in Supabase SQL Editor, then refresh. Public gallery uses fallback data.';
+    } else {
+      dbError = msg;
+    }
+    // Ensure categories fallback even on error
+    if (categories.length === 0) {
+      const fallback = ["Pins", "Inserts", "Dies", "Products", "Cores", "Gallery", "Cooling Systems", "Accessories"];
+      categories = fallback.map((name) => ({ id: name, name, slug: name.toLowerCase().replace(/\s+/g, "-") }));
+    }
+  }
 
   return (
     <div className="space-y-6">
