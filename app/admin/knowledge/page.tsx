@@ -45,7 +45,7 @@ export default async function AdminKnowledgePage({
   const whereClause = andConditions.length ? { AND: andConditions } : {};
 
   let total = 0;
-  let articles: Awaited<ReturnType<typeof prisma.knowledgeArticle.findMany>> = [];
+  let articles: Array<{ id: string; title: string; slug: string; category: string | null; isPublished: boolean; excerpt: string | null; coverBlobUrl: string | null; faqs: { id: string }[] }> = [];
   let categoriesRaw: { category: string | null }[] = [];
   let dbError: string | null = null;
   try {

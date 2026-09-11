@@ -61,7 +61,7 @@ export default async function AdminProductsPage({
 
   let categories: Awaited<ReturnType<typeof getCategories>> = [];
   let total = 0;
-  let products: Awaited<ReturnType<typeof prisma.product.findMany>> = [];
+  let products: Array<{ id: string; name: string; slug: string; isPublished: boolean; isFeatured: boolean; sortOrder: number; category: { name: string }; images: { blobUrl: string }[] }> = [];
   let dbError: string | null = null;
   try {
     [categories, total, products] = await Promise.all([
