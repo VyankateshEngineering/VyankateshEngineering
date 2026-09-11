@@ -53,13 +53,13 @@ export default async function AdminLayout({
     <div className="min-h-screen flex" style={{ background: 'var(--neutral-50)' }}>
       {/* Sidebar — same industrial theme as public site */}
       <aside className="hidden md:flex w-[280px] flex-col border-r bg-white" style={{ borderColor: 'var(--neutral-200)', boxShadow: '2px 0 8px rgba(11,15,25,0.04)' }}>
-        <div className="px-6 py-6 border-b" style={{ borderColor: 'var(--neutral-100)', background: 'linear-gradient(135deg, var(--neutral-900) 0%, #1a2332 100%)' }}>
+        <div className="px-6 py-6 border-b" style={{ borderColor: 'var(--neutral-200)', background: 'var(--neutral-0)' }}>
           <Link href="/admin" className="block">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-lg flex items-center justify-center text-white font-bold text-sm" style={{ background: 'var(--primary-500)' }}>V</div>
               <div>
-                <h2 className="text-[13px] font-bold tracking-tight text-white leading-none">Vyankatesh Engineering</h2>
-                <p className="text-[11px] text-white/70 mt-1 tracking-wide uppercase">Admin Panel • {userRole}</p>
+                <h2 className="text-[13px] font-bold tracking-tight leading-none" style={{ color: 'var(--neutral-900)' }}>Vyankatesh Engineering</h2>
+                <p className="text-[11px] mt-1 tracking-wide uppercase" style={{ color: 'var(--neutral-500)' }}>Admin Panel • {userRole}</p>
               </div>
             </div>
           </Link>
