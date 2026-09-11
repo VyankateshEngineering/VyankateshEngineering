@@ -194,7 +194,6 @@ const jsonLd = [
 ];
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-W5D9HGXPSV';
   return (
     <html lang="en" className={`${inter.variable} ${outfit.variable}`}>
       <body>
@@ -202,8 +201,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         <main id="main-content">{children}</main>
         <Footer />
-        {/* Google tag (gtag.js) - installed manually per G-W5D9HGXPSV, also works via env NEXT_PUBLIC_GA_MEASUREMENT_ID */}
-        <GoogleAnalytics gaId={gaId} />
+        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
+        )}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
