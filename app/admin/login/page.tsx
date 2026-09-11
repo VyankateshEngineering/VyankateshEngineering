@@ -52,78 +52,45 @@ export default async function AdminLoginPage({
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12" style={{ background: 'var(--neutral-50)' }}>
       <div className="w-full max-w-md">
-        <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-8">
+        <div className="card p-8" style={{ background: 'var(--neutral-0)' }}>
           <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
+            <div className="mx-auto w-12 h-12 rounded-lg flex items-center justify-center text-white font-bold mb-3" style={{ background: 'var(--primary-500)' }}>V</div>
+            <h1 className="text-2xl font-bold tracking-tight" style={{ color: 'var(--neutral-900)', fontFamily: 'var(--font-display)' }}>
               Vyankatesh Engineering
             </h1>
-            <p className="mt-2 text-sm font-medium text-gray-600">Admin Login</p>
-            <p className="mt-1 text-xs text-gray-500">Sign in to access the dashboard</p>
+            <p className="mt-1 text-sm font-semibold" style={{ color: 'var(--neutral-700)' }}>Admin Login</p>
+            <p className="text-xs" style={{ color: 'var(--neutral-500)' }}>Internal CMS • Same brand as public site</p>
           </div>
 
           {error && (
-            <div
-              role="alert"
-              className="mb-6 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-800"
-            >
+            <div role="alert" className="mb-6 rounded-md px-4 py-3 text-sm" style={{ background: '#FFF0F2', border: '1px solid #FFD6DC', color: 'var(--accent-500)' }}>
               {error === "CredentialsSignin"
-                ? "Invalid email or password. Please try again."
+                ? "Invalid email or password."
                 : error === "AccessDenied"
-                  ? "Access denied. Please sign in with an admin account."
+                  ? "Access denied."
                   : `Login failed: ${error}`}
             </div>
           )}
 
           <form action={authenticate} className="space-y-5">
             <input type="hidden" name="callbackUrl" value={callbackUrl} />
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                Email address
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                placeholder="admin@vyankateshengg.com"
-                className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition"
-              />
+            <div className="form-group">
+              <label htmlFor="email" className="form-label">Email address</label>
+              <input id="email" name="email" type="email" autoComplete="email" required placeholder="admin@vyankateshengg.com" className="form-input" />
             </div>
-
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                placeholder="••••••••"
-                className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition"
-              />
+            <div className="form-group">
+              <label htmlFor="password" className="form-label">Password</label>
+              <input id="password" name="password" type="password" autoComplete="current-password" required placeholder="••••••••" className="form-input" />
             </div>
-
-            <button
-              type="submit"
-              className="w-full rounded-lg bg-[#1a365d] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#122a4a] focus:outline-none focus:ring-2 focus:ring-[#1a365d]/20 focus:ring-offset-1 transition-colors"
-            >
+            <button type="submit" className="btn btn-primary w-full">
               Sign in
             </button>
-
-            <p className="text-center text-xs text-gray-500">
-              Secure session • httpOnly • SameSite=Lax
-            </p>
+            <p className="text-center caption" style={{ color: 'var(--neutral-500)' }}>Secure • httpOnly • SameSite=Lax</p>
           </form>
         </div>
-
-        <p className="mt-6 text-center text-xs text-gray-400">
-          Protected area. Unauthorized access is prohibited.
-        </p>
+        <p className="mt-6 text-center caption">Protected area</p>
       </div>
     </div>
   );
