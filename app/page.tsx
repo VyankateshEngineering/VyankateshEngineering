@@ -7,6 +7,9 @@ import ProductsSection from '@/components/home/ProductsSection';
 import GallerySection from '@/components/home/GallerySection';
 import CustomersSection from '@/components/home/CustomersSection';
 import ContactSection from '@/components/home/ContactSection';
+import { getProducts, getGalleryImages } from '@/lib/data';
+
+export const revalidate = 3600;
 
 const rawUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com';
 const baseUrl = rawUrl.includes('vyankateshengg.com') ? 'https://www.vyankateshengg.com' : (rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`);
@@ -39,7 +42,26 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
+export default async function Home() {
+  // Fetch via Prisma with unstable_cache (tags: products, gallery) — fallback to hardcoded if DB empty for build without DB
+  let products: Awaited<ReturnType<typeof getProducts>> = [];
+  let galleryImages: Awaited<ReturnType<typeof getGalleryImages>> = [];
+  try {
+    products = await getProducts();
+  } catch (e) {
+    console.error('[Home] getProducts fallback', e);
+    products = [];
+  }
+  try {
+    galleryImages = await getGalleryImages();
+  } catch (e) {
+    console.error('[Home] getGalleryImages fallback', e);
+    galleryImages = [];
+  }
+  const galleryCategories = Array.from(
+    new Set(galleryImages.map((g: any) => g.category).filter(Boolean) as string[]),
+  ).sort();
+
   return (
     <>
       {/* Server-rendered H1 for SEO / Bingbot — Hero H1 is client-fetched, so crawler would see no H1 without this */}
@@ -50,8 +72,8 @@ export default function Home() {
       <CompanySection />
       <FacilitiesSection />
       <CapabilitiesSection />
-      <ProductsSection />
-      <GallerySection />
+      <ProductsSection products={products as any} />
+      <GallerySection images={galleryImages as any} categories={galleryCategories} />
       <CustomersSection />
       <ContactSection />
     </>

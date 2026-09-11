@@ -1,0 +1,185 @@
+// Prisma schema for Vyankatesh Engineering — Supabase PostgreSQL
+// Generated for CMS + Admin + AEO/GEO (no redesign)
+// Uses Supabase pooled DATABASE_URL (6543 pgbouncer) + DIRECT_URL (5432) for migrations
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ── Category (products) ──
+model Category {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  slug        String    @unique
+  description String?   @db.Text
+  sortOrder   Int       @default(0) @map("sort_order")
+  products    Product[]
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  @@index([slug])
+  @@map("categories")
+}
+
+// ── Product ──
+model Product {
+  id               String         @id @default(cuid())
+  name             String
+  slug             String         @unique
+  categoryId       String
+  category         Category       @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+
+  description      String         @db.Text
+  overview         String?        @db.Text
+
+  // Existing product info preserved
+  specs            Json?          // Record<string,string>
+  features         String[]       @default([])
+  keyAdvantages    String[]       @default([]) @map("key_advantages")
+  applications     String?        @db.Text
+  applicationsList String[]       @default([]) @map("applications_list")
+  industries       String[]       @default([])
+  material         String?
+  tolerance        String?        @db.Text
+  surfaceFinish    String?        @map("surface_finish") @db.Text
+  customization    String?        @db.Text
+  availableSizes   String?        @map("available_sizes") @db.Text
+  qualityNote      String?        @map("quality_note") @db.Text
+
+  // SEO
+  seoTitle         String?        @map("seo_title")
+  seoDescription   String?        @map("seo_description") @db.Text
+
+  // Publishing
+  isPublished      Boolean        @default(true) @map("is_published")
+  isFeatured       Boolean        @default(false) @map("is_featured")
+  sortOrder        Int            @default(0) @map("sort_order")
+
+  images           ProductImage[]
+  faqs             ProductFAQ[]
+
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
+
+  @@index([slug])
+  @@index([isPublished, sortOrder])
+  @@index([categoryId])
+  @@map("products")
+}
+
+model ProductImage {
+  id        String  @id @default(cuid())
+  productId String  @map("product_id")
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  blobUrl   String  @map("blob_url") @db.Text // Vercel Blob URL
+  alt       String? @db.Text
+  caption   String? @db.Text
+  sortOrder Int     @default(0) @map("sort_order")
+  isPrimary Boolean @default(false) @map("is_primary")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([productId, sortOrder])
+  @@map("product_images")
+}
+
+model ProductFAQ {
+  id        String  @id @default(cuid())
+  productId String  @map("product_id")
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  question  String  @db.Text
+  answer    String  @db.Text
+  sortOrder Int     @default(0) @map("sort_order")
+
+  @@index([productId, sortOrder])
+  @@map("product_faqs")
+}
+
+// ── Gallery ──
+model GalleryImage {
+  id        String   @id @default(cuid())
+  blobUrl   String   @map("blob_url") @db.Text
+  title     String?
+  alt       String?  @db.Text
+  caption   String?  @db.Text
+  category  String?
+  sortOrder Int      @default(0) @map("sort_order")
+  isPublished Boolean @default(true) @map("is_published")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([isPublished, sortOrder])
+  @@index([category])
+  @@map("gallery_images")
+}
+
+// ── Knowledge / AEO ──
+model KnowledgeArticle {
+  id          String         @id @default(cuid())
+  slug        String         @unique
+  title       String
+  excerpt     String?        @db.Text
+  content     Json?          // MDX/structured content
+  coverBlobUrl String?       @map("cover_blob_url") @db.Text
+  category    String?
+  isPublished Boolean        @default(false) @map("is_published")
+  seoTitle    String?        @map("seo_title")
+  seoDescription String?     @map("seo_description") @db.Text
+  faqs        KnowledgeFAQ[]
+  createdAt   DateTime       @default(now()) @map("created_at")
+  updatedAt   DateTime       @updatedAt @map("updated_at")
+
+  @@index([slug])
+  @@index([isPublished])
+  @@map("knowledge_articles")
+}
+
+model KnowledgeFAQ {
+  id        String           @id @default(cuid())
+  articleId String           @map("article_id")
+  article   KnowledgeArticle @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  question  String           @db.Text
+  answer    String           @db.Text
+  sortOrder Int              @default(0) @map("sort_order")
+
+  @@index([articleId, sortOrder])
+  @@map("knowledge_faqs")
+}
+
+// ── Company Profile / GEO ──
+model CompanyProfile {
+  id           String   @id @default(cuid())
+  name         String   // Vyankatesh Engineering
+  description  String   @db.Text
+  foundedYear  Int?     @map("founded_year")
+  address      Json?    // { street, locality, region, postalCode, country }
+  geo          Json?    // { lat, lng }
+  contact      Json?    // { email, phone, mapEmbedUrl }
+  capabilities String[] @default([])
+  processes    Json?    // [{title, desc}]
+  industries   String[] @default([])
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("company_profiles")
+}
+
+// ── Admin User (secure auth) ──
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  role         String   @default("admin") // admin
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}

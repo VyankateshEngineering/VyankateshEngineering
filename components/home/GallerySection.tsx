@@ -7,11 +7,18 @@ import ImageGallery, { GalleryImage } from '@/components/common/ImageGallery';
 import { LinkButton } from '@/components/ui/Button';
 import { ArrowRight, Loader2 } from 'lucide-react';
 import styles from './GallerySection.module.css';
-import { galleryItems } from '@/data/gallery';
+import { galleryItems as fallbackGallery } from '@/data/gallery';
 
-export default function GallerySection() {
-  const images = galleryItems as GalleryImage[];
-  const categories = Array.from(new Set(images.map((img: GalleryImage) => img.category).filter(Boolean))) as string[];
+interface GallerySectionProps {
+  images?: GalleryImage[];
+  categories?: string[];
+}
+
+export default function GallerySection({ images: propImages, categories: propCategories }: GallerySectionProps) {
+  const images = (propImages && propImages.length > 0 ? propImages : fallbackGallery) as GalleryImage[];
+  const categories = propCategories && propCategories.length > 0
+    ? propCategories
+    : (Array.from(new Set(images.map((img: GalleryImage) => img.category).filter(Boolean))) as string[]);
   const loading = false;
 
   return (

@@ -4,8 +4,11 @@ import { ChevronRight, Download, MessageSquare, Layers, ArrowRight } from 'lucid
 import StructuredData from '@/components/common/StructuredData';
 import { LinkButton } from '@/components/ui/Button';
 import GalleryPageClient from './GalleryPageClient';
-import { galleryItems } from '@/data/gallery';
+import { galleryItems as fallbackGallery } from '@/data/gallery';
+import { prisma } from '@/lib/db';
 import styles from '../(authority)/authority.module.css';
+
+export const revalidate = 3600;
 
 let rawUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com';
 const baseUrl = rawUrl.includes('vyankateshengg.com') ? 'https://www.vyankateshengg.com' : (rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`);
@@ -46,9 +49,32 @@ const imageObjectSchema = {
   url: `${baseUrl}/gallery`,
 };
 
-export default function GalleryPage() {
+async function getGalleryData() {
+  try {
+    const dbImages = await prisma.galleryImage.findMany({
+      where: { isPublished: true },
+      orderBy: { sortOrder: 'asc' },
+    });
+    if (dbImages && dbImages.length > 0) {
+      return dbImages.map((img) => ({
+        id: img.id,
+        url: img.blobUrl,
+        alt: img.alt || img.title || '',
+        caption: img.caption || img.title || '',
+        category: img.category || 'Gallery',
+        sortOrder: img.sortOrder,
+      }));
+    }
+  } catch (e) {
+    console.error('[GalleryPage] DB fallback', e);
+  }
+  return [...fallbackGallery].sort((a, b) => a.sortOrder - b.sortOrder);
+}
+
+export default async function GalleryPage() {
+  const galleryItems = await getGalleryData();
   // Derive unique categories
-  const categories = ['All', ...Array.from(new Set(galleryItems.map(g => g.category))).sort()];
+  const categories = ['All', ...Array.from(new Set(galleryItems.map((g) => g.category))).sort()];
   const sortedItems = [...galleryItems].sort((a, b) => a.sortOrder - b.sortOrder);
 
   return (

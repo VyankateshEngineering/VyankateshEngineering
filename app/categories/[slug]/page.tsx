@@ -2,7 +2,8 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { products } from '@/data/products';
+import { prisma } from '@/lib/db';
+import { products as fallbackProducts } from '@/data/products';
 import { settings } from '@/data/settings';
 import StructuredData from '@/components/common/StructuredData';
 import { LinkButton } from '@/components/ui/Button';
@@ -12,6 +13,8 @@ import {
   Factory, Layers, ArrowRight, ShieldCheck, Zap, Clock, Settings
 } from 'lucide-react';
 import styles from './category.module.css';
+
+export const revalidate = 3600;
 
 interface Props { params: { slug: string } }
 
@@ -190,27 +193,127 @@ const categoryContent: Record<string, {
   },
 };
 
-// ── Helper: derive category data ─────────────────────────────────────────────
-function getCategory(slug: string) {
-  const publishedProducts = products.filter(p => p.isPublished);
-  const categoryProducts = publishedProducts.filter(p => p.category.slug === slug);
-  if (categoryProducts.length === 0) return null;
+function toAppProduct(db: any) {
   return {
-    slug,
-    name: categoryProducts[0].category.name,
-    products: categoryProducts.sort((a, b) => a.sortOrder - b.sortOrder),
-    content: categoryContent[slug] || null,
+    id: db.id as string,
+    slug: db.slug as string,
+    name: db.name as string,
+    category: {
+      name: db.category?.name ?? 'Uncategorized',
+      slug: db.category?.slug ?? 'uncategorized',
+    },
+    description: (db.description as string) ?? '',
+    overview: (db.overview as string | null) ?? undefined,
+    applications: (db.applications as string | null) ?? '',
+    applicationsList: (db.applicationsList as string[]) ?? [],
+    specs: (db.specs as Record<string, string>) ?? {},
+    features: (db.features as string[]) ?? [],
+    keyAdvantages: (db.keyAdvantages as string[]) ?? [],
+    industries: (db.industries as string[]) ?? [],
+    material: (db.material as string | null) ?? undefined,
+    tolerance: (db.tolerance as string | null) ?? undefined,
+    surfaceFinish: (db.surfaceFinish as string | null) ?? undefined,
+    customization: (db.customization as string | null) ?? undefined,
+    availableSizes: (db.availableSizes as string | null) ?? undefined,
+    qualityNote: (db.qualityNote as string | null) ?? undefined,
+    faqs:
+      (db.faqs as any[])?.map((f: any) => ({
+        q: f.question as string,
+        a: f.answer as string,
+      })) ?? [],
+    images:
+      (db.images as any[])?.map((img: any) => ({
+        url: img.blobUrl as string,
+        alt: (img.alt as string | null) ?? (db.name as string),
+      })) ?? [],
+    isPublished: (db.isPublished as boolean) ?? true,
+    sortOrder: (db.sortOrder as number) ?? 0,
   };
 }
 
-export function generateStaticParams() {
-  const publishedProducts = products.filter(p => p.isPublished);
-  const categorySlugs = new Set(publishedProducts.map(p => p.category.slug));
-  return Array.from(categorySlugs).map(slug => ({ slug }));
+// ── Helper: derive category data ─────────────────────────────────────────────
+async function getCategory(slug: string) {
+  try {
+    const category = await prisma.category.findUnique({ where: { slug } });
+    if (!category) {
+      // fallback to hardcoded derivation
+      const publishedProducts = fallbackProducts.filter((p) => p.isPublished);
+      const categoryProducts = publishedProducts
+        .filter((p) => p.category.slug === slug)
+        .sort((a, b) => a.sortOrder - b.sortOrder);
+      if (categoryProducts.length === 0) return null;
+      return {
+        slug,
+        name: categoryProducts[0].category.name,
+        products: categoryProducts,
+        content: categoryContent[slug] || null,
+      };
+    }
+
+    // Use prisma.category + product filter
+    const dbProducts = await prisma.product.findMany({
+      where: { isPublished: true, categoryId: category.id },
+      include: {
+        category: true,
+        images: { orderBy: { sortOrder: 'asc' } },
+        faqs: { orderBy: { sortOrder: 'asc' } },
+      },
+      orderBy: { sortOrder: 'asc' },
+    });
+
+    if (!dbProducts || dbProducts.length === 0) {
+      // DB category exists but no products — fallback to hardcoded products for that slug if any
+      const fbProducts = fallbackProducts
+        .filter((p) => p.category.slug === slug && p.isPublished)
+        .sort((a, b) => a.sortOrder - b.sortOrder);
+      if (fbProducts.length === 0) return null;
+      return {
+        slug: category.slug,
+        name: category.name,
+        products: fbProducts as any,
+        content: categoryContent[slug] || null,
+      };
+    }
+
+    const products = dbProducts.map(toAppProduct);
+    return {
+      slug: category.slug,
+      name: category.name,
+      products,
+      content: categoryContent[slug] || null,
+    };
+  } catch (e) {
+    console.error(`[getCategory] ${slug} fallback`, e);
+    const publishedProducts = fallbackProducts.filter((p) => p.isPublished);
+    const categoryProducts = publishedProducts
+      .filter((p) => p.category.slug === slug)
+      .sort((a, b) => a.sortOrder - b.sortOrder);
+    if (categoryProducts.length === 0) return null;
+    return {
+      slug,
+      name: categoryProducts[0].category.name,
+      products: categoryProducts,
+      content: categoryContent[slug] || null,
+    };
+  }
+}
+
+export async function generateStaticParams() {
+  try {
+    const cats = await prisma.category.findMany({ select: { slug: true } });
+    if (cats && cats.length > 0) {
+      return cats.map((c) => ({ slug: c.slug }));
+    }
+  } catch (e) {
+    console.error('[generateStaticParams] categories fallback', e);
+  }
+  const publishedProducts = fallbackProducts.filter((p) => p.isPublished);
+  const categorySlugs = new Set(publishedProducts.map((p) => p.category.slug));
+  return Array.from(categorySlugs).map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const category = getCategory(params.slug);
+  const category = await getCategory(params.slug);
   if (!category) return {};
 
   const cc = category.content;
@@ -239,8 +342,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function CategoryPage({ params }: Props) {
-  const category = getCategory(params.slug);
+export default async function CategoryPage({ params }: Props) {
+  const category = await getCategory(params.slug);
   if (!category) notFound();
 
   const cc = category.content;
@@ -249,12 +352,36 @@ export default function CategoryPage({ params }: Props) {
   const url = `${baseUrl}/categories/${params.slug}`;
 
   // Other categories for cross-linking
-  const allCategorySlugs = [...new Set(products.filter(p => p.isPublished).map(p => p.category.slug))];
+  let allCategorySlugs: string[] = [];
+  try {
+    const cats = await prisma.category.findMany({ orderBy: { sortOrder: 'asc' } });
+    if (cats && cats.length > 0) {
+      allCategorySlugs = cats.map((c) => c.slug);
+    } else {
+      allCategorySlugs = [...new Set(fallbackProducts.filter((p) => p.isPublished).map((p) => p.category.slug))];
+    }
+  } catch {
+    allCategorySlugs = [...new Set(fallbackProducts.filter((p) => p.isPublished).map((p) => p.category.slug))];
+  }
+
+  let categoryNameMap = new Map<string, string>();
+  try {
+    const cats = await prisma.category.findMany();
+    for (const c of cats) categoryNameMap.set(c.slug, c.name);
+  } catch {
+    for (const p of fallbackProducts) {
+      if (!categoryNameMap.has(p.category.slug)) categoryNameMap.set(p.category.slug, p.category.name);
+    }
+  }
+  for (const p of fallbackProducts) {
+    if (!categoryNameMap.has(p.category.slug)) categoryNameMap.set(p.category.slug, p.category.name);
+  }
+
   const otherCategories = allCategorySlugs
-    .filter(s => s !== category.slug)
-    .map(s => {
-      const p = products.find(pr => pr.category.slug === s);
-      return p ? { slug: s, name: p.category.name } : null;
+    .filter((s) => s !== category.slug)
+    .map((s) => {
+      const name = categoryNameMap.get(s) ?? s;
+      return { slug: s, name };
     })
     .filter(Boolean) as { slug: string; name: string }[];
 
@@ -276,7 +403,7 @@ export default function CategoryPage({ params }: Props) {
     name: `${category.name} — Vyankatesh Engineering`,
     url,
     numberOfItems: category.products.length,
-    itemListElement: category.products.map((p, index) => ({
+    itemListElement: category.products.map((p: any, index: number) => ({
       '@type': 'ListItem',
       position: index + 1,
       item: {
@@ -284,7 +411,7 @@ export default function CategoryPage({ params }: Props) {
         name: p.name,
         description: p.description,
         url: `${baseUrl}/products/${p.slug}`,
-        image: p.images[0] ? `${baseUrl}${p.images[0].url}` : undefined,
+        image: p.images[0] ? (p.images[0].url?.startsWith('http') ? p.images[0].url : `${baseUrl}${p.images[0].url}`) : undefined,
         brand: { '@type': 'Brand', name: settings.companyName },
       }
     })),
@@ -293,7 +420,7 @@ export default function CategoryPage({ params }: Props) {
   const faqSchema = cc && cc.faqs.length > 0 ? {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: cc.faqs.map(f => ({
+    mainEntity: cc.faqs.map((f) => ({
       '@type': 'Question',
       name: f.q,
       acceptedAnswer: { '@type': 'Answer', text: f.a },
@@ -419,15 +546,16 @@ export default function CategoryPage({ params }: Props) {
             Browse our complete range of {category.name.toLowerCase()}. Each product page contains full technical specifications, material information, applications, and FAQ.
           </p>
           <div className={styles.productGrid}>
-            {category.products.map(product => {
+            {category.products.map((product: any) => {
               const imgUrl = product.images[0]?.url || '';
               const imgAlt = product.images[0]?.alt || product.name;
+              const imgSrc = imgUrl;
               return (
                 <Link href={`/products/${product.slug}`} key={product.id} className={styles.productCard}>
                   <div className={styles.productCardImage}>
                     {imgUrl && (
                       <Image
-                        src={imgUrl}
+                        src={imgSrc}
                         alt={imgAlt}
                         fill
                         className="object-cover"
@@ -490,7 +618,7 @@ export default function CategoryPage({ params }: Props) {
             <p className={styles.sectionLabel}>Serving</p>
             <h2 className={styles.sectionHeading} id="industries-heading">Industries Served</h2>
             <div className={styles.industriesGrid}>
-              {cc.industries.map(ind => (
+              {cc.industries.map((ind) => (
                 <span key={ind} className={styles.industryChip}>
                   <Factory size={14} aria-hidden="true" />
                   {ind}
@@ -519,7 +647,7 @@ export default function CategoryPage({ params }: Props) {
             <p className={styles.sectionLabel}>Browse More</p>
             <h2 className={styles.sectionHeading} id="related-cats-heading">Related Categories</h2>
             <div className={styles.catStrip}>
-              {otherCategories.map(cat => (
+              {otherCategories.map((cat) => (
                 <Link key={cat.slug} href={`/categories/${cat.slug}`} className={styles.catChip}>
                   <Layers size={14} />
                   {cat.name}

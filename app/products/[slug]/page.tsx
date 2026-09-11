@@ -2,7 +2,8 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { products } from '@/data/products';
+import { prisma } from '@/lib/db';
+import { products as fallbackProducts } from '@/data/products';
 import { settings } from '@/data/settings';
 import StructuredData from '@/components/common/StructuredData';
 import { LinkButton } from '@/components/ui/Button';
@@ -13,20 +14,87 @@ import {
 } from 'lucide-react';
 import styles from './product.module.css';
 
+export const revalidate = 3600;
+
 interface Props {
   params: { slug: string };
 }
 
-function getProduct(slug: string) {
-  return products.find(p => p.slug === slug && p.isPublished);
+function toAppProduct(db: any) {
+  return {
+    id: db.id as string,
+    slug: db.slug as string,
+    name: db.name as string,
+    category: {
+      name: db.category?.name ?? 'Uncategorized',
+      slug: db.category?.slug ?? 'uncategorized',
+    },
+    description: (db.description as string) ?? '',
+    overview: (db.overview as string | null) ?? undefined,
+    applications: (db.applications as string | null) ?? '',
+    applicationsList: (db.applicationsList as string[]) ?? [],
+    specs: (db.specs as Record<string, string>) ?? {},
+    features: (db.features as string[]) ?? [],
+    keyAdvantages: (db.keyAdvantages as string[]) ?? [],
+    industries: (db.industries as string[]) ?? [],
+    material: (db.material as string | null) ?? undefined,
+    tolerance: (db.tolerance as string | null) ?? undefined,
+    surfaceFinish: (db.surfaceFinish as string | null) ?? undefined,
+    customization: (db.customization as string | null) ?? undefined,
+    availableSizes: (db.availableSizes as string | null) ?? undefined,
+    qualityNote: (db.qualityNote as string | null) ?? undefined,
+    faqs:
+      (db.faqs as any[])?.map((f: any) => ({
+        q: f.question as string,
+        a: f.answer as string,
+      })) ?? [],
+    images:
+      (db.images as any[])?.map((img: any) => ({
+        url: img.blobUrl as string,
+        alt: (img.alt as string | null) ?? (db.name as string),
+      })) ?? [],
+    isPublished: (db.isPublished as boolean) ?? true,
+    sortOrder: (db.sortOrder as number) ?? 0,
+  };
 }
 
-export function generateStaticParams() {
-  return products.filter(p => p.isPublished).map(p => ({ slug: p.slug }));
+async function getProduct(slug: string) {
+  try {
+    const product = await prisma.product.findUnique({
+      where: { slug },
+      include: {
+        images: { orderBy: { sortOrder: 'asc' } },
+        faqs: { orderBy: { sortOrder: 'asc' } },
+        category: true,
+      },
+    });
+    if (!product || !product.isPublished) {
+      return fallbackProducts.find((p) => p.slug === slug && p.isPublished) ?? null;
+    }
+    return toAppProduct(product);
+  } catch (e) {
+    console.error(`[ProductPage] getProduct ${slug} fallback`, e);
+    return fallbackProducts.find((p) => p.slug === slug && p.isPublished) ?? null;
+  }
+}
+
+export async function generateStaticParams() {
+  try {
+    const dbProducts = await prisma.product.findMany({
+      where: { isPublished: true },
+      select: { slug: true },
+    });
+    if (dbProducts && dbProducts.length > 0) {
+      return dbProducts.map((p) => ({ slug: p.slug }));
+    }
+  } catch (e) {
+    console.error('[generateStaticParams] products fallback', e);
+  }
+  return fallbackProducts.filter((p) => p.isPublished).map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const product = getProduct(params.slug);
+  const product = await getProduct(params.slug);
   if (!product) return {};
 
   const title = `${product.name} Manufacturer India`;
@@ -35,7 +103,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   let rawUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com';
   const safeUrl = rawUrl.includes('vyankateshengg.com') ? 'https://www.vyankateshengg.com' : (rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`);
   const url = `${safeUrl}/products/${product.slug}`;
-  const imageUrl = product.images?.[0]?.url || '/og-image.jpg';
+  const rawImage = product.images?.[0]?.url || '/og-image.jpg';
+  const imageUrl = rawImage.startsWith('http') ? rawImage : `${safeUrl}${rawImage}`;
 
   return {
     title,
@@ -67,8 +136,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function ProductPage({ params }: Props) {
-  const product = getProduct(params.slug);
+export default async function ProductPage({ params }: Props) {
+  const product = await getProduct(params.slug);
   if (!product) notFound();
 
   let rawBaseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com';
@@ -76,18 +145,75 @@ export default function ProductPage({ params }: Props) {
   const url = `${baseUrl}/products/${product.slug}`;
 
   // Related products: same category, different product, max 3
-  const relatedProducts = products
-    .filter(p => p.category.slug === product.category.slug && p.id !== product.id && p.isPublished)
-    .slice(0, 3);
+  let relatedProducts: typeof fallbackProducts = [];
+  try {
+    const dbRelated = await prisma.product.findMany({
+      where: {
+        isPublished: true,
+        category: { slug: product.category.slug },
+        NOT: { slug: product.slug },
+      },
+      include: {
+        category: true,
+        images: { orderBy: { sortOrder: 'asc' } },
+        faqs: { orderBy: { sortOrder: 'asc' } },
+      },
+      orderBy: { sortOrder: 'asc' },
+      take: 3,
+    });
+    if (dbRelated && dbRelated.length > 0) {
+      relatedProducts = dbRelated.map(toAppProduct) as any;
+    } else {
+      relatedProducts = fallbackProducts
+        .filter((p) => p.category.slug === product.category.slug && p.id !== product.id && p.isPublished)
+        .slice(0, 3) as any;
+    }
+  } catch (e) {
+    console.error('[ProductPage] related fallback', e);
+    relatedProducts = fallbackProducts
+      .filter((p) => p.category.slug === product.category.slug && p.id !== product.id && p.isPublished)
+      .slice(0, 3) as any;
+  }
 
   // Other categories for cross-linking
-  const allCategorySlugs = [...new Set(products.filter(p => p.isPublished).map(p => p.category.slug))];
+  let allCategorySlugs: string[] = [];
+  try {
+    const cats = await prisma.category.findMany({ orderBy: { sortOrder: 'asc' } });
+    if (cats && cats.length > 0) {
+      allCategorySlugs = cats.map((c) => c.slug);
+    } else {
+      allCategorySlugs = [...new Set(fallbackProducts.filter((p) => p.isPublished).map((p) => p.category.slug))];
+    }
+  } catch {
+    allCategorySlugs = [...new Set(fallbackProducts.filter((p) => p.isPublished).map((p) => p.category.slug))];
+  }
+  // If DB categories empty, derive from relatedProducts/product fallback as well
+  if (allCategorySlugs.length === 0) {
+    allCategorySlugs = [...new Set(fallbackProducts.filter((p) => p.isPublished).map((p) => p.category.slug))];
+  }
+
+  // Build category name lookup for otherCategories
+  let categoryNameMap = new Map<string, string>();
+  try {
+    const cats = await prisma.category.findMany();
+    for (const c of cats) categoryNameMap.set(c.slug, c.name);
+  } catch {
+    // fallback from products
+    for (const p of fallbackProducts) {
+      if (!categoryNameMap.has(p.category.slug)) categoryNameMap.set(p.category.slug, p.category.name);
+    }
+  }
+  // Ensure fallback map has entries for any slugs still missing
+  for (const p of fallbackProducts) {
+    if (!categoryNameMap.has(p.category.slug)) categoryNameMap.set(p.category.slug, p.category.name);
+  }
+
   const otherCategories = allCategorySlugs
-    .filter(s => s !== product.category.slug)
+    .filter((s) => s !== product.category.slug)
     .slice(0, 4)
-    .map(s => {
-      const p = products.find(pr => pr.category.slug === s);
-      return p ? { slug: s, name: p.category.name } : null;
+    .map((s) => {
+      const name = categoryNameMap.get(s) ?? s;
+      return { slug: s, name };
     })
     .filter(Boolean) as { slug: string; name: string }[];
 
@@ -110,7 +236,7 @@ export default function ProductPage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: product.name,
-    image: product.images.map(img => `${baseUrl}${img.url}`),
+    image: product.images.map((img: any) => (img.url?.startsWith('http') ? img.url : `${baseUrl}${img.url}`)),
     description: (product.overview || product.description).replace(/<[^>]*>?/gm, ''),
     brand: { '@type': 'Brand', name: settings.companyName },
     manufacturer: { '@type': 'Organization', name: settings.companyName, url: baseUrl },
@@ -121,7 +247,7 @@ export default function ProductPage({ params }: Props) {
   const faqSchema = product.faqs && product.faqs.length > 0 ? {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: product.faqs.map(faq => ({
+    mainEntity: product.faqs.map((faq: any) => ({
       '@type': 'Question',
       name: faq.q,
       acceptedAnswer: { '@type': 'Answer', text: faq.a },
@@ -202,7 +328,7 @@ export default function ProductPage({ params }: Props) {
                   <div style={{ marginBottom: 'var(--space-6)' }}>
                     <p style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--neutral-500)', marginBottom: 'var(--space-3)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Industries Served</p>
                     <div className={styles.industriesGrid}>
-                      {product.industries.map(ind => (
+                      {product.industries.map((ind: string) => (
                         <span key={ind} className={styles.industryChip}>
                           <Factory size={12} aria-hidden="true" />
                           {ind}
@@ -223,7 +349,7 @@ export default function ProductPage({ params }: Props) {
               <p className={styles.sectionLabel}>Engineering Detail</p>
               <h2 className={styles.sectionHeading} id="features-heading">Key Features</h2>
               <div className={styles.featuresGrid}>
-                {product.features.map((feature, i) => (
+                {product.features.map((feature: string, i: number) => (
                   <div key={i} className={styles.featureCard}>
                     <div className={styles.featureIcon} aria-hidden="true">
                       <CheckCircle2 size={20} />
@@ -285,7 +411,7 @@ export default function ProductPage({ params }: Props) {
               <p className={styles.sectionLabel}>Use Cases</p>
               <h2 className={styles.sectionHeading} id="applications-heading">Applications</h2>
               <ul className={styles.applicationsList}>
-                {product.applicationsList.map((app, i) => (
+                {product.applicationsList.map((app: string, i: number) => (
                   <li key={i} className={styles.applicationItem}>
                     <span className={styles.applicationDot} aria-hidden="true" />
                     <span className={styles.applicationText}>{app}</span>
@@ -303,7 +429,7 @@ export default function ProductPage({ params }: Props) {
               <p className={styles.sectionLabel}>Why Choose Vyankatesh</p>
               <h2 className={styles.sectionHeading} id="advantages-heading">Key Advantages</h2>
               <div className={styles.featuresGrid}>
-                {product.keyAdvantages.map((adv, i) => (
+                {product.keyAdvantages.map((adv: string, i: number) => (
                   <div key={i} className={styles.featureCard}>
                     <div className={styles.featureIcon} aria-hidden="true">
                       <Wrench size={20} />
@@ -353,27 +479,31 @@ export default function ProductPage({ params }: Props) {
               <p className={styles.sectionLabel}>Explore More</p>
               <h2 className={styles.sectionHeading} id="related-heading">Related Products</h2>
               <div className={styles.relatedGrid}>
-                {relatedProducts.map(rp => (
-                  <Link href={`/products/${rp.slug}`} key={rp.id} className={styles.relatedCard} style={{ textDecoration: 'none' }}>
-                    <div className={styles.relatedImage}>
-                      <Image
-                        src={rp.images[0]?.url || '/placeholder.png'}
-                        alt={rp.images[0]?.alt || rp.name}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                        loading="lazy"
-                      />
-                    </div>
-                    <div className={styles.relatedContent}>
-                      <span className={styles.relatedCat}>{rp.category.name}</span>
-                      <div className={styles.relatedName}>{rp.name}</div>
-                      <span style={{ fontSize: 'var(--text-sm)', color: 'var(--primary-600)', fontWeight: 600, marginTop: 'auto', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        View Specifications <ArrowRight size={14} />
-                      </span>
-                    </div>
-                  </Link>
-                ))}
+                {relatedProducts.map((rp: any) => {
+                  const rawUrl = rp.images[0]?.url || '/placeholder.png';
+                  const imgSrc = rawUrl;
+                  return (
+                    <Link href={`/products/${rp.slug}`} key={rp.id} className={styles.relatedCard} style={{ textDecoration: 'none' }}>
+                      <div className={styles.relatedImage}>
+                        <Image
+                          src={imgSrc}
+                          alt={rp.images[0]?.alt || rp.name}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                          loading="lazy"
+                        />
+                      </div>
+                      <div className={styles.relatedContent}>
+                        <span className={styles.relatedCat}>{rp.category.name}</span>
+                        <div className={styles.relatedName}>{rp.name}</div>
+                        <span style={{ fontSize: 'var(--text-sm)', color: 'var(--primary-600)', fontWeight: 600, marginTop: 'auto', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          View Specifications <ArrowRight size={14} />
+                        </span>
+                      </div>
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           </section>
@@ -390,7 +520,7 @@ export default function ProductPage({ params }: Props) {
                   <Layers size={14} />
                   All {product.category.name}
                 </Link>
-                {otherCategories.map(cat => (
+                {otherCategories.map((cat) => (
                   <Link key={cat.slug} href={`/categories/${cat.slug}`} className={styles.catChip}>
                     <Layers size={14} />
                     {cat.name}

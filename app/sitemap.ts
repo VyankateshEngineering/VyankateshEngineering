@@ -1,20 +1,51 @@
 import { MetadataRoute } from 'next';
-import { products } from '@/data/products';
+import { prisma } from '@/lib/db';
+import { products as fallbackProducts } from '@/data/products';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export const revalidate = 3600;
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const rawUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vyankateshengg.com';
   const baseUrl = rawUrl.includes('vyankateshengg.com') ? 'https://www.vyankateshengg.com' : (rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`);
 
-  const publishedProducts = products.filter((product) => product.isPublished);
+  let publishedProducts: { slug: string }[] = [];
+  let categories: { slug: string }[] = [];
 
-  // Extract unique categories dynamically
-  const categoryMap = new Map();
-  publishedProducts.forEach((product) => {
-    if (product.category) {
-      categoryMap.set(product.category.slug, product.category);
+  try {
+    const dbProducts = await prisma.product.findMany({
+      where: { isPublished: true },
+      select: { slug: true, category: { select: { slug: true } } },
+    });
+    if (dbProducts && dbProducts.length > 0) {
+      publishedProducts = dbProducts.map((p) => ({ slug: p.slug }));
+      const catMap = new Map<string, { slug: string }>();
+      for (const p of dbProducts) {
+        if (p.category?.slug) catMap.set(p.category.slug, { slug: p.category.slug });
+      }
+      // Also include categories that may have no products yet but exist as category records
+      try {
+        const dbCats = await prisma.category.findMany({ select: { slug: true } });
+        for (const c of dbCats) {
+          if (!catMap.has(c.slug)) catMap.set(c.slug, { slug: c.slug });
+        }
+      } catch {}
+      categories = Array.from(catMap.values());
+    } else {
+      throw new Error('Empty DB, fallback');
     }
-  });
-  const categories = Array.from(categoryMap.values());
+  } catch (e) {
+    console.error('[sitemap] DB fallback', e);
+    publishedProducts = fallbackProducts.filter((product) => product.isPublished).map((p) => ({ slug: p.slug }));
+    const categoryMap = new Map<string, { slug: string }>();
+    fallbackProducts
+      .filter((p) => p.isPublished)
+      .forEach((product) => {
+        if (product.category) {
+          categoryMap.set(product.category.slug, { slug: product.category.slug });
+        }
+      });
+    categories = Array.from(categoryMap.values());
+  }
 
   const currentTimestamp = new Date().toISOString();
 

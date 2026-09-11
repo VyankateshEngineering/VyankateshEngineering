@@ -7,7 +7,7 @@ import SectionTitle from '@/components/ui/SectionTitle';
 import ScrollReveal from '@/components/common/ScrollReveal';
 import { LinkButton } from '@/components/ui/Button';
 import styles from './ProductsSection.module.css';
-import { products as allProductsData } from '@/data/products';
+import { products as fallbackProducts } from '@/data/products';
 
 interface Category {
   slug: string;
@@ -25,12 +25,17 @@ interface Product {
     name: string;
     slug: string;
   };
-  images: { url: string }[];
+  images: { url: string; alt?: string }[];
 }
 
-export default function ProductsSection() {
+interface ProductsSectionProps {
+  products?: Product[];
+}
+
+export default function ProductsSection({ products: propProducts }: ProductsSectionProps) {
   const [activeCat, setActiveCat] = useState('All');
-  const products = allProductsData.filter(p => p.isPublished) as Product[];
+  // Use DB products if provided, otherwise fallback to hardcoded (for build without DB)
+  const products = (propProducts && propProducts.length > 0 ? propProducts : fallbackProducts.filter(p => p.isPublished)) as Product[];
   const categories = (() => {
     const map = new Map();
     for (const p of products) {
