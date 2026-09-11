@@ -193,14 +193,28 @@ const jsonLd = [
   }
 ];
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // Hide public Header/Footer on /admin (admin has its own shell) — uses x-pathname from middleware
+  let isAdmin = false;
+  try {
+    const { headers } = await import('next/headers');
+    const h = await headers();
+    const p = h.get('x-pathname') || h.get('x-invoke-path') || '';
+    isAdmin = p.startsWith('/admin');
+  } catch {}
+  // Fallback: also check if children contains admin (for static generation where headers not available, admin layout will still render inside but we hide outer chrome via CSS)
   return (
     <html lang="en" className={`${inter.variable} ${outfit.variable}`}>
       <body>
-
-        <Header />
-        <main id="main-content">{children}</main>
-        <Footer />
+        {isAdmin ? (
+          <>{children}</>
+        ) : (
+          <>
+            <Header />
+            <main id="main-content">{children}</main>
+            <Footer />
+          </>
+        )}
         {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
         )}

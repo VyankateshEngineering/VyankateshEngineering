@@ -20,11 +20,15 @@ export default async function AdminDashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight text-gray-900">Dashboard</h1>
-        <p className="mt-1 text-sm text-gray-600">
-          Welcome back, <span className="font-medium text-gray-900">{email}</span>. Manage your site content from here.
+      <div className="rounded-xl p-6 text-white" style={{ background: 'linear-gradient(135deg, var(--neutral-900) 0%, #1a2332 100%)', border: '1px solid rgba(255,255,255,0.08)' }}>
+        <h1 className="text-2xl font-bold tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>Dashboard</h1>
+        <p className="mt-1.5 text-sm text-white/80">
+          Welcome back, <span className="font-semibold text-white">{email}</span> — manage products, gallery, knowledge and company profile.
         </p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white/90 border border-white/10">● Admin • {email}</span>
+          <span className="inline-flex rounded-full px-3 py-1 text-xs font-medium" style={{ background: 'var(--primary-500)', color: 'white' }}>Live • vyankateshengg.com</span>
+        </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -32,20 +36,24 @@ export default async function AdminDashboardPage() {
           <Link
             key={card.href}
             href={card.href}
-            className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm hover:shadow-md hover:border-gray-300 transition"
+            className="group rounded-xl bg-white p-5 transition hover:shadow-md"
+            style={{ border: '1px solid var(--neutral-200)', boxShadow: '0 1px 3px rgba(11,15,25,0.06)' }}
           >
-            <h3 className="text-sm font-semibold text-gray-900">{card.title}</h3>
-            <p className="mt-1 text-sm text-gray-600">{card.desc}</p>
-            <span className="mt-3 inline-flex text-xs font-medium text-[#1a365d]">Open →</span>
+            <h3 className="text-sm font-semibold" style={{ color: 'var(--neutral-900)' }}>{card.title}</h3>
+            <p className="mt-1 text-sm" style={{ color: 'var(--neutral-600)' }}>{card.desc}</p>
+            <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold group-hover:gap-1.5 transition-all" style={{ color: 'var(--primary-600)' }}>Open →</span>
           </Link>
         ))}
       </div>
 
-      <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
-        <h4 className="text-sm font-semibold text-blue-900">Security</h4>
-        <p className="mt-1 text-sm text-blue-800">
-          Session is httpOnly, Secure (in production), SameSite=Lax. Credentials are verified via bcryptjs (10 rounds) and Prisma.
-        </p>
+      <div className="rounded-xl p-4 flex gap-3" style={{ background: 'var(--primary-50)', border: '1px solid var(--primary-100)' }}>
+        <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-white text-xs font-bold" style={{ background: 'var(--primary-500)' }}>✓</div>
+        <div>
+          <h4 className="text-sm font-semibold" style={{ color: 'var(--neutral-900)' }}>Secure &amp; Fast</h4>
+          <p className="mt-1 text-sm leading-relaxed" style={{ color: 'var(--neutral-700)' }}>
+            Sessions are <code>httpOnly</code>, <code>Secure</code> (prod), <code>SameSite=Lax</code>. Credentials via <code>bcryptjs</code> (10 rounds) + Prisma. Public site uses <code>revalidateTag</code> — image changes appear without redeploy.
+          </p>
+        </div>
       </div>
     </div>
   );

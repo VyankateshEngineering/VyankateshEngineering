@@ -50,85 +50,119 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      {/* Sidebar */}
-      <aside className="hidden md:flex w-64 flex-col border-r border-gray-200 bg-white">
-        <div className="px-6 py-6 border-b border-gray-200">
+    <div className="min-h-screen flex" style={{ background: 'var(--neutral-50)' }}>
+      {/* Sidebar — same industrial theme as public site */}
+      <aside className="hidden md:flex w-[280px] flex-col border-r bg-white" style={{ borderColor: 'var(--neutral-200)', boxShadow: '2px 0 8px rgba(11,15,25,0.04)' }}>
+        <div className="px-6 py-6 border-b" style={{ borderColor: 'var(--neutral-100)', background: 'linear-gradient(135deg, var(--neutral-900) 0%, #1a2332 100%)' }}>
           <Link href="/admin" className="block">
-            <h2 className="text-sm font-bold tracking-tight text-[#1a365d]">Vyankatesh Engineering</h2>
-            <p className="text-xs text-gray-500 mt-1">Admin Panel • {userRole}</p>
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-lg flex items-center justify-center text-white font-bold text-sm" style={{ background: 'var(--primary-500)' }}>V</div>
+              <div>
+                <h2 className="text-[13px] font-bold tracking-tight text-white leading-none">Vyankatesh Engineering</h2>
+                <p className="text-[11px] text-white/70 mt-1 tracking-wide uppercase">Admin Panel • {userRole}</p>
+              </div>
+            </div>
           </Link>
         </div>
 
-        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="flex items-center rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition"
-            >
-              {item.label}
-            </Link>
-          ))}
+        <nav className="flex-1 px-3 py-5 space-y-1.5 overflow-y-auto">
+          {navItems.map((item) => {
+            const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href));
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition"
+                style={{
+                  background: isActive ? 'var(--primary-50)' : 'transparent',
+                  color: isActive ? 'var(--primary-700)' : 'var(--neutral-700)',
+                  borderLeft: isActive ? '3px solid var(--primary-500)' : '3px solid transparent',
+                }}
+              >
+                <span className="w-2 h-2 rounded-full" style={{ background: isActive ? 'var(--primary-500)' : 'var(--neutral-300)' }} aria-hidden="true" />
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
 
-        <div className="border-t border-gray-200 p-4">
-          <div className="mb-3">
-            <p className="text-xs font-medium text-gray-900 truncate" title={userEmail}>
+        <div className="border-t p-4 space-y-3" style={{ borderColor: 'var(--neutral-100)', background: 'var(--neutral-0)' }}>
+          <div className="rounded-lg px-3 py-3" style={{ background: 'var(--neutral-50)', border: '1px solid var(--neutral-100)' }}>
+            <p className="text-xs font-semibold truncate" style={{ color: 'var(--neutral-900)' }} title={userEmail}>
               {userEmail}
             </p>
-            <p className="text-[11px] text-gray-500 capitalize">{userRole}</p>
+            <p className="text-[11px] capitalize" style={{ color: 'var(--neutral-500)' }}>{userRole} • 20+ Years Exp.</p>
           </div>
           <form action={logoutAction}>
             <button
               type="submit"
-              className="w-full rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white hover:bg-black transition"
+              className="w-full rounded-lg px-3 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
+              style={{ background: 'var(--neutral-900)' }}
             >
               Logout
             </button>
           </form>
           <Link
             href="/"
-            className="mt-2 block text-center text-xs text-gray-500 hover:text-gray-700 underline"
+            className="block text-center text-xs font-medium hover:underline"
+            style={{ color: 'var(--neutral-500)' }}
           >
-            View site →
+            ← View public site
           </Link>
         </div>
       </aside>
 
-      {/* Mobile top bar + content */}
+      {/* Content area */}
       <div className="flex flex-1 flex-col min-w-0">
-        {/* Mobile nav */}
-        <header className="md:hidden border-b border-gray-200 bg-white px-4 py-3">
-          <div className="flex items-center justify-between gap-4">
-            <Link href="/admin" className="text-sm font-bold text-[#1a365d]">
-              VE Admin
+        {/* Mobile top bar — same theme */}
+        <header className="md:hidden sticky top-0 z-20 border-b bg-white px-3 py-3" style={{ borderColor: 'var(--neutral-200)' }}>
+          <div className="flex items-center justify-between gap-2">
+            <Link href="/admin" className="flex items-center gap-2">
+              <span className="w-7 h-7 rounded-md flex items-center justify-center text-white text-xs font-bold" style={{ background: 'var(--primary-500)' }}>V</span>
+              <span className="text-sm font-bold" style={{ color: 'var(--neutral-900)' }}>VE Admin</span>
             </Link>
-            <div className="flex items-center gap-2 overflow-x-auto">
-              {navItems.map((item) => (
+            <span className="text-[11px] px-2 py-1 rounded-full text-white" style={{ background: 'var(--neutral-900)' }}>{userRole}</span>
+          </div>
+          <div className="mt-3 flex items-center gap-1.5 overflow-x-auto pb-1 -mx-1 px-1">
+            {navItems.map((item) => {
+              const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href));
+              return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="whitespace-nowrap rounded-md bg-gray-100 px-2.5 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-200"
+                  className="whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-semibold transition shrink-0"
+                  style={{
+                    background: isActive ? 'var(--primary-500)' : 'var(--neutral-50)',
+                    color: isActive ? 'white' : 'var(--neutral-700)',
+                    border: `1px solid ${isActive ? 'var(--primary-600)' : 'var(--neutral-200)'}`,
+                  }}
                 >
                   {item.label}
                 </Link>
-              ))}
-              <form action={logoutAction}>
-                <button
-                  type="submit"
-                  className="whitespace-nowrap rounded-md bg-gray-900 px-2.5 py-1.5 text-xs font-medium text-white"
-                >
-                  Logout
-                </button>
-              </form>
-            </div>
+              );
+            })}
+            <form action={logoutAction} className="shrink-0">
+              <button type="submit" className="rounded-full px-3 py-1.5 text-xs font-semibold text-white" style={{ background: 'var(--neutral-900)' }}>
+                Logout
+              </button>
+            </form>
           </div>
-          <div className="mt-2 text-[11px] text-gray-500 truncate">{userEmail} • {userRole}</div>
+          <div className="mt-2 text-[11px] truncate" style={{ color: 'var(--neutral-500)' }}>{userEmail}</div>
         </header>
 
-        {/* Main content */}
-        <main className="flex-1 p-4 md:p-6 lg:p-8">{children}</main>
+        {/* Breadcrumb bar for admin */}
+        <div className="border-b bg-white px-4 md:px-6 lg:px-8 py-3 hidden md:block" style={{ borderColor: 'var(--neutral-100)' }}>
+          <div className="flex items-center gap-2 text-xs" style={{ color: 'var(--neutral-500)' }}>
+            <Link href="/admin" className="hover:underline" style={{ color: 'var(--neutral-500)' }}>Admin</Link>
+            <span>/</span>
+            <span className="font-semibold" style={{ color: 'var(--neutral-900)' }}>{navItems.find(n => pathname === n.href)?.label || pathname.split('/').pop() || 'Dashboard'}</span>
+          </div>
+        </div>
+
+        {/* Main content — card style like public site */}
+        <main className="flex-1 p-4 md:p-6 lg:p-8">
+          <div className="max-w-[1400px] mx-auto">{children}</div>
+        </main>
       </div>
     </div>
   );
