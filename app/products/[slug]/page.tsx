@@ -231,7 +231,9 @@ export default async function ProductPage({ params }: Props) {
     ],
   };
 
-  // B2B custom tooling — no fixed price (made to drawing). No Offer price keeps Product valid for organic without Merchant critical "price 0".
+  // B2B custom tooling — no fixed price (made to drawing). Availability-only Offer
+  // (no price/priceCurrency) keeps the offers node present like the valid pages
+  // without reintroducing the Merchant "price 0" critical.
   const productSchema = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -241,6 +243,12 @@ export default async function ProductPage({ params }: Props) {
     brand: { '@type': 'Brand', name: settings.companyName },
     manufacturer: { '@type': 'Organization', name: settings.companyName, url: baseUrl },
     url,
+    offers: {
+      '@type': 'Offer',
+      url,
+      availability: 'https://schema.org/InStock',
+      itemCondition: 'https://schema.org/NewCondition',
+    },
     ...(product.material && { material: product.material }),
   };
 

@@ -396,7 +396,9 @@ export default async function CategoryPage({ params }: Props) {
     ],
   };
 
-  // Category ItemList — products are custom to drawing (price on request). Omit Offer to avoid Merchant "price 0" critical.
+  // Category ItemList — products are custom to drawing (price on request). Availability-only
+  // Offer (no price/priceCurrency) keeps the offers node present like the valid pages
+  // without reintroducing the Merchant "price 0" critical.
   const itemListSchema = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
@@ -413,6 +415,12 @@ export default async function CategoryPage({ params }: Props) {
         url: `${baseUrl}/products/${p.slug}`,
         image: p.images[0] ? (p.images[0].url?.startsWith('http') ? p.images[0].url : `${baseUrl}${p.images[0].url}`) : undefined,
         brand: { '@type': 'Brand', name: settings.companyName },
+        offers: {
+          '@type': 'Offer',
+          url: `${baseUrl}/products/${p.slug}`,
+          availability: 'https://schema.org/InStock',
+          itemCondition: 'https://schema.org/NewCondition',
+        },
       }
     })),
   };
