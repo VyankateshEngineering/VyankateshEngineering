@@ -90,7 +90,7 @@ export default function Hero() {
               alt={currentSlide.title}
               fill
               priority
-              quality={95}
+              quality={85}
               className={styles.image}
               sizes="100vw"
             />

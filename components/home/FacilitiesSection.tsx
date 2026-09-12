@@ -60,7 +60,14 @@ export default function FacilitiesSection() {
             <StaggerChild key={i}>
               <div className={styles.card}>
                 <div className={styles.imageWrap}>
-                  <Image src={fac.image} alt={fac.title} fill className={styles.image} />
+                  <Image
+                    src={fac.image}
+                    alt={fac.title}
+                    fill
+                    className={styles.image}
+                    sizes="(max-width: 640px) 85vw, (max-width: 1024px) 50vw, 25vw"
+                    loading="lazy"
+                  />
                   <div className={styles.overlay} />
                   <div className={styles.iconWrap}>{fac.icon}</div>
                 </div>

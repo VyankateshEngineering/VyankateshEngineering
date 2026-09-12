@@ -95,7 +95,12 @@ export function LinkButton({
     </>
   );
 
-  if (isHash) {
+  // Static files (e.g. /catalogue.pdf) must not use Next <Link>:
+  // Link prefetches via RSC (?_rsc=...) which 404s for non-page assets
+  // and logs console errors flagged by Lighthouse Best Practices.
+  const isFile = href?.toLowerCase().includes('.pdf');
+
+  if (isHash || isFile) {
     return (
       <a href={href} className={classes}>
         {content}

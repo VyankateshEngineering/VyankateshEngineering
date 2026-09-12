@@ -76,7 +76,8 @@ export default function CompanySection() {
                 alt="Precision Engineering Facility"
                 fill
                 className={styles.image}
-                sizes="(max-width: 1024px) 100vw, 50vw"
+                sizes="(max-width: 640px) 90vw, (max-width: 1024px) 85vw, 42vw"
+                loading="lazy"
               />
             </ScrollReveal>
             <ScrollReveal delay={0.4} direction="up" className={styles.subImageWrap}>
@@ -86,7 +87,8 @@ export default function CompanySection() {
                   alt="Tooling Components"
                   fill
                   className={styles.image}
-                  sizes="(max-width: 1024px) 50vw, 25vw"
+                  sizes="(max-width: 640px) 200px, 320px"
+                  loading="lazy"
                 />
               </div>
               <div className={styles.experienceBadge}>
