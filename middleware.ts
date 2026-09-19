@@ -125,8 +125,9 @@ export const config = {
      * - _next/static (static files)
      * - _next/image (image optimization)
      * - favicon.ico
-     * - public folder assets
+     * - public folder assets (images, fonts, CSS, JS, PDFs)
+     * - robots.txt, sitemap.xml, manifest
      */
-    "/((?!_next/static|_next/image|favicon\\.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
+    "/((?!_next/static|_next/image|favicon\\.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|woff|woff2|css|js|pdf|txt|xml)$).*)",
   ],
 };
