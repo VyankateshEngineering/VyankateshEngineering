@@ -285,14 +285,26 @@ export default function KnowledgeForm({
         </div>
       </div>
 
-      <div className="flex items-center gap-2">
-        <button type="submit" disabled={saving} className="rounded-lg bg-[#1a365d] px-6 py-2.5 text-sm font-semibold text-white hover:bg-[#122a4a] disabled:opacity-50">
-          {saving ? "Saving..." : mode === "create" ? "Create Article (put knowledge/{slug}.webp if cover)" : "Save Changes (put/del server-only)"}
+      <div className="flex flex-wrap items-center gap-2 pt-2">
+        <button
+          type="submit"
+          disabled={saving}
+          className="rounded-lg bg-[#1a365d] px-6 py-2.5 text-sm font-semibold text-white hover:bg-[#122a4a] disabled:opacity-50 transition"
+          style={{ minHeight: "44px" }}
+        >
+          {saving ? "Saving..." : mode === "create" ? "Create Article" : "Save Changes"}
         </button>
-        <button type="button" onClick={() => router.push("/admin/knowledge")} className="rounded-lg border border-gray-300 bg-white px-6 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50">
+        <button
+          type="button"
+          onClick={() => router.push("/admin/knowledge")}
+          className="rounded-lg border border-gray-300 bg-white px-6 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          style={{ minHeight: "44px" }}
+        >
           Cancel
         </button>
-        <span className="ml-auto text-xs text-gray-500">revalidateTag(&apos;knowledge&apos;) + revalidatePath for /knowledge & /knowledge/[slug] + /sitemap.xml</span>
+        <span className="w-full sm:w-auto sm:ml-auto text-xs text-gray-500">
+          revalidateTag(&apos;knowledge&apos;) + revalidatePath for /knowledge & /knowledge/[slug] + /sitemap.xml
+        </span>
       </div>
     </form>
   );

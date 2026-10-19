@@ -507,6 +507,7 @@
 /* ── Why us comparison table ── */
 .comparisonTable {
   width: 100%;
+  min-width: 600px;
   border-collapse: collapse;
   border-radius: var(--radius-xl);
   overflow: hidden;

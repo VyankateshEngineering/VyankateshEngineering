@@ -8,6 +8,7 @@ export const dynamic = "force-dynamic";
 
 const navItems = [
   { href: "/admin", label: "Dashboard", exact: true },
+  { href: "/admin/inquiries", label: "Inquiries" },
   { href: "/admin/products", label: "Products" },
   { href: "/admin/gallery", label: "Gallery" },
   { href: "/admin/knowledge", label: "Knowledge" },
@@ -106,17 +107,36 @@ export default async function AdminLayout({
 
         {/* Main */}
         <div className="flex flex-1 flex-col min-w-0">
-          {/* Mobile top bar — reuses public .btn */}
-          <header className="md:hidden sticky top-0 z-20 border-b bg-white px-3 py-2.5 flex items-center justify-between gap-2" style={{ borderColor: 'var(--neutral-200)' }}>
-            <Link href="/admin" className="flex items-center gap-2">
-              <Image src="/logo.png" alt="VE" width={28} height={28} style={{ objectFit: 'contain' }} />
-              <span className="text-sm font-bold" style={{ color: 'var(--neutral-900)', fontFamily: 'var(--font-display)' }}>VE Admin</span>
-            </Link>
-            <div className="flex items-center gap-1.5 overflow-x-auto">
+          {/* Mobile top bar — reuses public .btn & branding */}
+          <header className="md:hidden sticky top-0 z-20 border-b bg-white" style={{ borderColor: 'var(--neutral-200)' }}>
+            <div className="px-3 py-2 flex items-center justify-between gap-2 border-b" style={{ borderColor: 'var(--neutral-100)' }}>
+              <Link href="/admin" className="flex items-center gap-2">
+                <Image src="/logo.png" alt="VE" width={26} height={26} style={{ objectFit: 'contain' }} />
+                <span className="text-sm font-bold" style={{ color: 'var(--neutral-900)', fontFamily: 'var(--font-display)' }}>VE Admin</span>
+              </Link>
+              <div className="flex items-center gap-2">
+                <Link href="/" className="text-xs font-medium text-neutral-600 hover:text-neutral-900 hover:underline px-1.5 py-1">
+                  Public Site
+                </Link>
+                <form action={logoutAction}>
+                  <button type="submit" className="text-xs font-semibold px-2.5 py-1 rounded border border-neutral-200 bg-neutral-50 text-neutral-700 hover:bg-neutral-100 transition">
+                    Logout
+                  </button>
+                </form>
+              </div>
+            </div>
+            <div className="flex items-center gap-1.5 overflow-x-auto px-3 py-2 scrollbar-none" style={{ WebkitOverflowScrolling: 'touch' }}>
               {navItems.map((item) => {
                 const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href));
                 return (
-                  <Link key={item.href} href={item.href} className={`btn ${isActive ? 'btn-primary' : 'btn-ghost'} btn-sm`}>{item.label}</Link>
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`btn ${isActive ? 'btn-primary' : 'btn-ghost'} btn-sm shrink-0 whitespace-nowrap`}
+                    style={{ minHeight: '36px' }}
+                  >
+                    {item.label}
+                  </Link>
                 );
               })}
             </div>

@@ -7,10 +7,11 @@ export const metadata = {
 };
 
 const cards = [
+  { title: "Inquiries", href: "/admin/inquiries", desc: "View and manage incoming customer inquiries and RFQs" },
   { title: "Products", href: "/admin/products", desc: "Manage products, categories, and SEO" },
   { title: "Gallery", href: "/admin/gallery", desc: "Upload and organize gallery images" },
   { title: "Knowledge", href: "/admin/knowledge", desc: "AEO articles and FAQs" },
-  { title: "Company", href: "/admin/company", desc: "Profile, contact, and GEO data" },
+  { title: "Company", href: "/admin/company-profile", desc: "Profile, contact, and GEO data" },
   { title: "Settings", href: "/admin/settings", desc: "Site settings and metadata" },
 ];
 

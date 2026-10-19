@@ -209,11 +209,18 @@ export default function CompanyProfileClient({ initialData, isNew }: { initialDa
         </div>
       </div>
 
-      <div className="flex items-center gap-2">
-        <button type="submit" disabled={saving} className="rounded-lg bg-[#1a365d] px-6 py-2.5 text-sm font-semibold text-white hover:bg-[#122a4a] disabled:opacity-50">
+      <div className="flex flex-wrap items-center gap-2 pt-2">
+        <button
+          type="submit"
+          disabled={saving}
+          className="rounded-lg bg-[#1a365d] px-6 py-2.5 text-sm font-semibold text-white hover:bg-[#122a4a] disabled:opacity-50 transition"
+          style={{ minHeight: "44px" }}
+        >
           {saving ? "Saving..." : isNew ? "Create Company Profile" : "Save Company Profile"}
         </button>
-        <span className="ml-auto text-xs text-gray-500">Server action <code>upsertCompanyProfile</code> — zod validated, revalidateTag(&apos;company&apos;) + /company-profile, /, /about, /sitemap.xml</span>
+        <span className="w-full sm:w-auto sm:ml-auto text-xs text-gray-500">
+          Server action <code>upsertCompanyProfile</code> — zod validated, revalidateTag(&apos;company&apos;) + /company-profile, /, /about, /sitemap.xml
+        </span>
       </div>
     </form>
   );

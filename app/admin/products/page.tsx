@@ -178,14 +178,14 @@ export default async function AdminProductsPage({
             </select>
           </div>
         </div>
-        <div className="mt-3 flex items-center gap-2">
-          <button type="submit" className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-black">
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <button type="submit" className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-black transition" style={{ minHeight: "40px" }}>
             Apply
           </button>
-          <Link href="/admin/products" className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+          <Link href="/admin/products" className="inline-flex items-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition" style={{ minHeight: "40px" }}>
             Reset
           </Link>
-          <span className="ml-auto text-xs text-gray-500">{total} product(s) total</span>
+          <span className="w-full sm:w-auto sm:ml-auto text-xs text-gray-500">{total} product(s) total</span>
         </div>
       </form>
 

@@ -193,22 +193,27 @@ export async function POST(req: Request) {
       <p style="white-space: pre-wrap; background: #f5f5f5; padding: 15px; border-radius: 8px;">${escapeHtml(cleanMessage)}</p>
     `.trim();
 
-    // 11. Send email
+    // 11. Send email (non-blocking failure so inquiry is not lost if email provider has limits)
+    let emailSent = false;
     if (serverEnv.RESEND_API_KEY) {
-      const resend = new Resend(serverEnv.RESEND_API_KEY);
+      try {
+        const resend = new Resend(serverEnv.RESEND_API_KEY);
+        const { error: sendError } = await resend.emails.send({
+          from: `${settings.companyName} Inquiries <${serverEnv.RESEND_FROM_EMAIL}>`,
+          to: serverEnv.CONTACT_EMAIL,
+          replyTo: cleanEmail,
+          subject: `[Inquiry] ${cleanRequirement} from ${cleanName}`,
+          html: emailHtml,
+          attachments,
+        });
 
-      const { error: sendError } = await resend.emails.send({
-        from: `${settings.companyName} Inquiries <${serverEnv.RESEND_FROM_EMAIL}>`,
-        to: serverEnv.CONTACT_EMAIL,
-        replyTo: cleanEmail,
-        subject: `[Inquiry] ${cleanRequirement} from ${cleanName}`,
-        html: emailHtml,
-        attachments,
-      });
-
-      if (sendError) {
-        console.error('[Inquiries] Resend API error:', sendError);
-        return jsonError('Failed to send your inquiry. Please try again later.', 502);
+        if (sendError) {
+          console.error('[Inquiries] Resend API error:', sendError);
+        } else {
+          emailSent = true;
+        }
+      } catch (mailErr) {
+        console.error('[Inquiries] Resend unexpected error:', mailErr);
       }
     } else {
       console.warn('[Inquiries] RESEND_API_KEY not configured. Email not sent.');
@@ -216,12 +221,42 @@ export async function POST(req: Request) {
       console.log('[Inquiries] Subject:', `[Inquiry] ${cleanRequirement} from ${cleanName}`);
     }
 
-    // 12. Update deduplication cache
+    // 12. Save inquiry to Supabase PostgreSQL database
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (supabaseUrl && supabaseKey) {
+      try {
+        const dbRes = await fetch(`${supabaseUrl}/rest/v1/inquiries`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': supabaseKey,
+            'Authorization': `Bearer ${supabaseKey}`,
+            'Prefer': 'return=minimal',
+          },
+          body: JSON.stringify({
+            name: cleanName,
+            email: cleanEmail,
+            company_name: cleanCompanyName || null,
+            requirement: cleanRequirement,
+            message: cleanMessage,
+            status: 'NEW',
+          }),
+        });
+        if (!dbRes.ok) {
+          console.error('[Inquiries] Supabase insert failed with status:', dbRes.status, await dbRes.text());
+        }
+      } catch (dbErr) {
+        console.error('[Inquiries] Supabase insert error:', dbErr);
+      }
+    }
+
+    // 13. Update deduplication cache
     dedupCache.set(dedupKey, Date.now());
     cleanupDedupCache();
 
     return NextResponse.json(
-      { success: true, message: 'Inquiry submitted successfully' },
+      { success: true, message: 'Inquiry submitted successfully', emailSent },
       { status: 201 },
     );
   } catch (error) {
